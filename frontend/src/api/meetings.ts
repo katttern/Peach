@@ -8,7 +8,7 @@ export type Meeting = {
 
 export type CreateMeeting = Omit<Meeting, "id">;
 
-const API_URL = "/api/meetings";
+const API_URL = `${import.meta.env.VITE_API_URL ?? ""}/api/meetings`;
 
 export async function getMeetings(): Promise<Meeting[]> {
   const response = await fetch(API_URL);

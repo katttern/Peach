@@ -20,6 +20,7 @@ spry/
 │   └── workflows/
 │       └── ci.yml
 ├── .gitignore
+├── Makefile
 ├── PROJECT.md
 ├── docker-compose.yml
 ├── backend/
@@ -56,6 +57,7 @@ spry/
 | --- | --- |
 | `.github/workflows/ci.yml` | GitHub Actions workflow that runs backend and frontend lint jobs on every push. |
 | `.gitignore` | Excludes locally installed frontend packages and Python bytecode from Git. |
+| `Makefile` | Deployment contract: builds and publishes the frontend to S3/CloudFront and the backend image to ECR/ECS. |
 | `PROJECT.md` | This structural contract. |
 | `docker-compose.yml` | The complete local runtime definition: `postgres`, `backend`, and `frontend`. |
 
@@ -143,9 +145,20 @@ The backend listens on container port **8000** and exposes only:
 | `src/components/meeting-form.tsx` | Collects a title, start, end, and attendee count and submits it. |
 | `src/components/ui/` | shadcn/ui component files used by this page. |
 
-The frontend listens on container port **5173**. Its only application-level dependency is the backend API: browser requests use the same-origin `/api/meetings` path, which Vite forwards inside the Compose network to `http://backend:8000`. It reads meetings with `GET /api/meetings` and creates them with `POST /api/meetings`. This proxy is Vite configuration, not an additional Compose service. The frontend does not access PostgreSQL.
+The frontend listens on container port **5173**. Its only application-level dependency is the backend API: browser requests use the same-origin `/api/meetings` path, which Vite forwards inside the Compose network to `http://backend:8000`. It reads meetings with `GET /api/meetings` and creates them with `POST /api/meetings`. This proxy is Vite configuration, not an additional Compose service. The frontend does not access PostgreSQL. For the S3/CloudFront build, `FRONTEND_API_URL` supplies the backend's public origin as `VITE_API_URL`.
 
 The frontend lint commands are `npm run lint` (ESLint **9.10.0**) and `npm run format:check` (Prettier **3.3.3**).
+
+## Deployment contract
+
+`Makefile` is the sole deployment recipe; a future deployment workflow must run these same targets rather than duplicate their commands.
+
+| Target | Required variables | Actions |
+| --- | --- | --- |
+| `make deploy-frontend` | `FRONTEND_BUCKET`, `CLOUDFRONT_DISTRIBUTION_ID`, `FRONTEND_API_URL`; optional `AWS_REGION` (defaults to `us-east-1`) | Builds the Vite bundle, synchronizes `frontend/dist/` to S3, then invalidates all CloudFront paths. |
+| `make deploy-backend` | `AWS_ACCOUNT_ID`, `ECR_REPOSITORY`, `ECS_CLUSTER`, `ECS_SERVICE`; optional `AWS_REGION` and `IMAGE_TAG` | Builds the backend image, logs Docker in to ECR, pushes the image, forces a new ECS deployment, and waits until its service is stable. |
+
+`IMAGE_TAG` defaults to the current Git commit's short hash. AWS authentication is provided by the caller (local AWS CLI credentials or future GitHub OIDC credentials); it is never stored in the Makefile.
 
 ## `docker-compose.yml` service contracts
 
