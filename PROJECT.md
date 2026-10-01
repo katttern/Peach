@@ -16,6 +16,10 @@ The root Compose file builds and starts PostgreSQL, the API, and the web UI. No 
 
 ```text
 spry/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── .gitignore
 ├── PROJECT.md
 ├── docker-compose.yml
 ├── backend/
@@ -50,6 +54,8 @@ spry/
 
 | Path | Purpose |
 | --- | --- |
+| `.github/workflows/ci.yml` | GitHub Actions workflow that runs backend and frontend lint jobs on every push. |
+| `.gitignore` | Excludes locally installed frontend packages and Python bytecode from Git. |
 | `PROJECT.md` | This structural contract. |
 | `docker-compose.yml` | The complete local runtime definition: `postgres`, `backend`, and `frontend`. |
 
@@ -75,6 +81,8 @@ spry/
 | `migrations/` | Alembic migration environment and revisions. |
 | `migrations/env.py` | Connects Alembic to the SQLAlchemy model metadata. |
 | `migrations/versions/` | Ordered Alembic migration revisions, including the meetings table. |
+
+`pyproject.toml` also configures Ruff **0.6.9** for Python error, import-order, and style checks. The backend lint command is `ruff check backend`.
 
 ### Backend API contract
 
@@ -116,6 +124,9 @@ The backend listens on container port **8000** and exposes only:
 | `Dockerfile` | Builds and runs the frontend container. |
 | `package.json` | Pins the frontend dependencies and scripts. |
 | `vite.config.ts` | Vite configuration, including the internal `/api` proxy to `http://backend:8000`. |
+| `eslint.config.js` | ESLint configuration for React and TypeScript files. |
+| `prettier.config.js` | Prettier formatting configuration. |
+| `.prettierignore` | Files excluded from Prettier checks. |
 | `tailwind.config.ts` | Tailwind content scanning configuration. |
 | `postcss.config.js` | Runs Tailwind through PostCSS. |
 | `index.html` | Vite's HTML document and frontend mount point. |
@@ -133,6 +144,8 @@ The backend listens on container port **8000** and exposes only:
 | `src/components/ui/` | shadcn/ui component files used by this page. |
 
 The frontend listens on container port **5173**. Its only application-level dependency is the backend API: browser requests use the same-origin `/api/meetings` path, which Vite forwards inside the Compose network to `http://backend:8000`. It reads meetings with `GET /api/meetings` and creates them with `POST /api/meetings`. This proxy is Vite configuration, not an additional Compose service. The frontend does not access PostgreSQL.
+
+The frontend lint commands are `npm run lint` (ESLint **9.10.0**) and `npm run format:check` (Prettier **3.3.3**).
 
 ## `docker-compose.yml` service contracts
 

@@ -8,7 +8,9 @@ export function MeetingList({ meetings }: { meetings: Meeting[] }) {
       {meetings.map((meeting) => (
         <li key={meeting.id} className="rounded border p-4">
           <h2 className="font-semibold">{meeting.title}</h2>
-          <p>{meeting.starts_at} — {meeting.ends_at}</p>
+          <p>
+            {meeting.starts_at} — {meeting.ends_at}
+          </p>
           <p>{meeting.attendee_count} attendees</p>
         </li>
       ))}

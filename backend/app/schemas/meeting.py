@@ -1,5 +1,5 @@
-import uuid
 import re
+import uuid
 from datetime import datetime, timezone
 
 from pydantic import BaseModel, field_serializer, field_validator
@@ -15,10 +15,14 @@ class CreateMeeting(BaseModel):
     @classmethod
     def require_utc_datetime(cls, value: object) -> object:
         if isinstance(value, datetime):
-            if value.tzinfo is None or value.utcoffset() != timezone.utc.utcoffset(value):
+            if value.tzinfo is None or value.utcoffset() != timezone.utc.utcoffset(
+                value
+            ):
                 raise ValueError("must be a UTC datetime")
             return value
-        if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", value):
+        if not isinstance(value, str) or not re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", value
+        ):
             raise ValueError("must use YYYY-MM-DDTHH:MM:SSZ UTC format")
         return value
 
