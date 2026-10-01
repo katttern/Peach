@@ -12,4 +12,3 @@ app.add_middleware(
 )
 app.include_router(meetings_router, prefix="/api")
 
-unused_value = 1
