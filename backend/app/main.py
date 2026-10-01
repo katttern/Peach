@@ -11,3 +11,5 @@ app.add_middleware(
     allow_headers=["content-type"],
 )
 app.include_router(meetings_router, prefix="/api")
+
+unused_value = 1
