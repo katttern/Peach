@@ -8,7 +8,11 @@ S3_BUCKET       ?= peach-frontend-katttern
 CF_DISTRIBUTION ?= E37V7OK25PWZRX
 FRONTEND_BUCKET ?= peach-frontend-katttern
 CLOUDFRONT_DISTRIBUTION_ID ?= E37V7OK25PWZRX
-FRONTEND_API_URL ?= FRONTEND_API_URL ?= https://d344hgmqfilirt.cloudfront.net
+FRONTEND_API_URL ?= https://d344hgmqfilirt.cloudfront.net
+
+AUTH_STACK  ?= peach-auth
+AUTH_REGION ?= us-east-1
+cognito_output = $(shell aws cloudformation describe-stacks --region $(AUTH_REGION) --stack-name $(AUTH_STACK) --query "Stacks[0].Outputs[?OutputKey=='$(1)'].OutputValue" --output text)
 
 .PHONY: deploy-frontend deploy-backend
 
@@ -16,7 +20,7 @@ deploy-frontend:
 	@test -n "$(FRONTEND_BUCKET)" || (echo "FRONTEND_BUCKET is required"; exit 1)
 	@test -n "$(CLOUDFRONT_DISTRIBUTION_ID)" || (echo "CLOUDFRONT_DISTRIBUTION_ID is required"; exit 1)
 	@test -n "$(FRONTEND_API_URL)" || (echo "FRONTEND_API_URL is required"; exit 1)
-	cd frontend && npm ci && VITE_API_URL="$(FRONTEND_API_URL)" npm run build
+	cd frontend && npm ci && VITE_API_URL="$(FRONTEND_API_URL)" VITE_COGNITO_AUTHORITY="$(call cognito_output,Authority)" VITE_COGNITO_CLIENT_ID="$(call cognito_output,ClientId)" VITE_COGNITO_DOMAIN="$(call cognito_output,HostedDomain)" npm run build
 	aws s3 sync frontend/dist/ "s3://$(FRONTEND_BUCKET)/" --delete
 	aws cloudfront create-invalidation --distribution-id "$(CLOUDFRONT_DISTRIBUTION_ID)" --paths "/*"
 

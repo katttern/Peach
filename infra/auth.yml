@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Cognito user pool with email+password and Google sign-in
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: peach
+  DomainPrefix:
+    Type: String
+  SiteUrl:
+    Type: String
+  GoogleClientId:
+    Type: String
+  GoogleClientSecret:
+    Type: String
+    NoEcho: true
+
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub ${ProjectName}-users
+      UserPoolTier: ESSENTIALS
+      UsernameAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireUppercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+      UserPoolTags:
+        PROJECT_NAME: !Ref ProjectName
+
+  GoogleProvider:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      UserPoolId: !Ref UserPool
+      ProviderName: Google
+      ProviderType: Google
+      ProviderDetails:
+        client_id: !Ref GoogleClientId
+        client_secret: !Ref GoogleClientSecret
+        authorize_scopes: openid email profile
+      AttributeMapping:
+        email: email
+        email_verified: email_verified
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn: GoogleProvider
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: !Sub ${ProjectName}-web
+      GenerateSecret: false
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: [code]
+      AllowedOAuthScopes: [openid, email, profile]
+      SupportedIdentityProviders: [COGNITO, Google]
+      CallbackURLs:
+        - !Sub ${SiteUrl}/
+        - http://localhost:5173/
+      LogoutURLs:
+        - !Sub ${SiteUrl}/
+        - http://localhost:5173/
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: !Ref DomainPrefix
+      ManagedLoginVersion: 2
+
+  ManagedLoginBranding:
+    Type: AWS::Cognito::ManagedLoginBranding
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientId: !Ref UserPoolClient
+      UseCognitoProvidedValues: true
+
+Outputs:
+  UserPoolId:
+    Value: !Ref UserPool
+  ClientId:
+    Value: !Ref UserPoolClient
+  Authority:
+    Value: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}
+  HostedDomain:
+    Value: !Sub https://${DomainPrefix}.auth.${AWS::Region}.amazoncognito.com
