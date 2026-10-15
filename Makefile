@@ -34,3 +34,10 @@ deploy-backend:
 	docker push "$(BACKEND_IMAGE)"
 	aws ecs update-service --region "$(AWS_REGION)" --cluster "$(ECS_CLUSTER)" --service "$(ECS_SERVICE)" --force-new-deployment
 	aws ecs wait services-stable --region "$(AWS_REGION)" --cluster "$(ECS_CLUSTER)" --services "$(ECS_SERVICE)"
+
+REPORTS_STACK ?= peach-reports
+
+.PHONY: report-now
+report-now:
+	@test -n "$(WEEK)" || (echo "WEEK is required, e.g. make report-now WEEK=2026-W40"; exit 1)
+	./scripts/report-now.sh "$(WEEK)" "$(REPORTS_STACK)"
