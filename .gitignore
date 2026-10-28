@@ -5,3 +5,5 @@ backend/**/__pycache__/
 
 .env
 backend.zip
+*.egg-info/
+.pytest_cache/

@@ -18,6 +18,9 @@ services:
       context: ./backend
     environment:
       DATABASE_URL: postgresql+psycopg://spry:spry@postgres:5432/spry
+      COGNITO_AUTHORITY: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Mxjm62BAS
+      COGNITO_CLIENT_ID: 18a2au33rm9n9t9eck3g9ja3ve
+      CORS_ORIGINS: http://localhost:5173
     ports:
       - "8000:8000"
     depends_on:

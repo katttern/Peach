@@ -43,7 +43,8 @@ def _run(payload: dict, from_sqs: bool) -> dict:
     )
 
     if action == "seed":
-        return {"seeded": seed_demo_data(week)}
+        owner_sub = payload.get("owner_sub") or os.environ.get("SEED_OWNER_SUB", "demo")
+        return {"seeded": seed_demo_data(week, owner_sub)}
 
     if week == os.environ.get("FAIL_WEEK"):
         raise RuntimeError(f"deliberate failure for {week}")

@@ -1,12 +1,19 @@
+import logging
 import os
+from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from app.db.session import Base
+from app.models.agenda import Agenda  # noqa: F401
 from app.models.meeting import Meeting  # noqa: F401
 
 config = context.config
+# Log "Running upgrade ..." from the CLI (container start). Skipped when the
+# host already configured logging, e.g. the report-builder Lambda.
+if config.config_file_name and not logging.getLogger().handlers:
+    fileConfig(config.config_file_name)
 config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
 target_metadata = Base.metadata
 
