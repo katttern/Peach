@@ -1,0 +1,1 @@
+{"event": "agenda_parsed", "user": "94c81428-d031-700e-78be-67cd16be051f", "provider": "converse", "model": "us.amazon.nova-pro-v1:0", "prompt_version": "agenda-v1", "input_tokens": 1066, "output_tokens": 527, "latency_ms": 5763, "cost_usd": 0.002539, "status": 200}

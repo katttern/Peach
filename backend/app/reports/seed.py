@@ -5,8 +5,8 @@ from app.models.meeting import Meeting
 from app.reports.weekly import week_bounds
 
 
-def seed_demo_data(week: str) -> int:
-    """Insert demo meetings into `week` and the week before it."""
+def seed_demo_data(week: str, owner_sub: str) -> int:
+    """Insert demo meetings owned by `owner_sub` into `week` and the week before."""
     start, _ = week_bounds(week)
     rows = []
     for base, n in ((start, 5), (start - timedelta(days=7), 3)):
@@ -18,6 +18,7 @@ def seed_demo_data(week: str) -> int:
                     starts_at=s,
                     ends_at=s + timedelta(minutes=30 * (i + 1)),
                     attendee_count=2 + i,
+                    owner_sub=owner_sub,
                 )
             )
     with SessionLocal() as session:

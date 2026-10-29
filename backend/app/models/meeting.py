@@ -18,3 +18,5 @@ class Meeting(Base):
     starts_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     ends_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     attendee_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    # Cognito `sub` of the user who created the meeting; every read filters on it.
+    owner_sub: Mapped[str] = mapped_column(String, nullable=False, index=True)

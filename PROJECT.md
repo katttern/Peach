@@ -30,8 +30,14 @@ spry/
 │   ├── app/
 │   │   ├── main.py
 │   │   ├── api/meetings.py
+│   │   ├── api/agenda.py
 │   │   ├── models/meeting.py
+│   │   ├── models/agenda.py
 │   │   ├── schemas/meeting.py
+│   │   ├── schemas/agenda.py
+│   │   ├── ai/
+│   │   ├── auth.py
+│   │   ├── settings.py
 │   │   └── db/session.py
 │   └── migrations/
 │       ├── env.py
@@ -74,10 +80,17 @@ spry/
 | `app/main.py` | Creates the FastAPI application and mounts the API routes. |
 | `app/api/` | HTTP-facing API modules. |
 | `app/api/meetings.py` | Defines only the meetings HTTP endpoints. |
+| `app/api/agenda.py` | Defines the per-meeting agenda endpoints (authenticated). |
+| `app/auth.py` | Verifies Cognito access tokens; `require_user` FastAPI dependency. Does not import `app.db`. |
+| `app/settings.py` | Environment settings (`COGNITO_AUTHORITY`, `COGNITO_CLIENT_ID`, `CORS_ORIGINS`, `PARSER_MODEL`, `AWS_REGION`). Does not import `app.db`. |
+| `app/ai/` | Agenda parser (Claude on Amazon Bedrock) and its Lambda Function URL handler; deployed separately via `infra/ai.yml`, never touches the database. |
 | `app/models/` | SQLAlchemy persistence-model modules. |
 | `app/models/meeting.py` | SQLAlchemy persistence model for a meeting. |
+| `app/models/agenda.py` | SQLAlchemy persistence model for a meeting's agenda (`agendas` table). |
 | `app/schemas/` | JSON request and response schema modules. |
 | `app/schemas/meeting.py` | Request and response shapes used by the API routes. |
+| `app/schemas/agenda.py` | `AgendaIn` / `AgendaOut`; item shapes are reused from `app/ai/agenda.py`. |
+| `tests/` | Pytest suite; API tests run against PostgreSQL when `TEST_DATABASE_URL` is set. |
 | `app/db/` | Database connection and session modules. |
 | `app/db/session.py` | Database engine and SQLAlchemy session boundary. |
 | `migrations/` | Alembic migration environment and revisions. |
@@ -88,12 +101,14 @@ spry/
 
 ### Backend API contract
 
-The backend listens on container port **8000** and exposes only:
+The backend listens on container port **8000** and exposes only the endpoints below. Every endpoint requires `Authorization: Bearer <Cognito access token>` and returns `401` without a valid one. Meetings belong to the user who created them: the backend stores the token's `sub` as `owner_sub` (internal, never returned), lists only the caller's meetings, and answers `404` for someone else's meeting or its agenda, exactly as for a missing one.
 
 | Method and path | Input | Output |
 | --- | --- | --- |
-| `GET /api/meetings` | No request body | `200 OK` with `Meeting[]` JSON. |
-| `POST /api/meetings` | `CreateMeeting` JSON | `201 Created` with one `Meeting` JSON object. |
+| `GET /api/meetings` | No request body | `200 OK` with the caller's `Meeting[]` JSON. |
+| `POST /api/meetings` | `CreateMeeting` JSON | `201 Created` with one `Meeting` JSON object, owned by the caller. |
+| `GET /api/meetings/{id}/agenda` | No request body | `200 OK` with `Agenda` JSON; `404` if the meeting or its agenda does not exist. |
+| `PUT /api/meetings/{id}/agenda` | `AgendaIn` JSON | `200 OK` with `Agenda` JSON (created or replaced; one agenda per meeting); `404` if the meeting does not exist; `422` on invalid input. |
 
 `Meeting` is exactly this JSON object:
 
@@ -115,7 +130,27 @@ The backend listens on container port **8000** and exposes only:
 | `ends_at` | string | UTC ISO 8601 timestamp in `YYYY-MM-DDTHH:MM:SSZ` form. |
 | `attendee_count` | integer | Number of attendees. |
 
-`GET /api/meetings` returns a JSON array of zero or more `Meeting` objects, for example `[]` when there are no meetings. `CreateMeeting` has exactly `title`, `starts_at`, `ends_at`, and `attendee_count`, with the same types and formats as `Meeting`; it does not accept `id`. The database schema is changed only through Alembic migrations.
+`GET /api/meetings` returns a JSON array of zero or more of the caller's `Meeting` objects, for example `[]` when they have none. Rows created before ownership existed (migration `0003`) carry `owner_sub = 'legacy'` and are visible to nobody. `CreateMeeting` has exactly `title`, `starts_at`, `ends_at`, and `attendee_count`, with the same types and formats as `Meeting`; it does not accept `id`.
+
+`Agenda` is this JSON object:
+
+```json
+{
+  "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "meeting_id": "550e8400-e29b-41d4-a716-446655440000",
+  "title": "Sprint planning",
+  "starts_at": "2026-10-01T09:00:00Z",
+  "duration_minutes": 60,
+  "items": [{"topic": "Backlog review", "owner": "Olia", "minutes": 15}],
+  "action_items": [{"task": "Update the board", "owner": null, "due": "2026-10-03"}],
+  "ai_suggestion": {"title": "Sprint planning", "items": [], "action_items": [], "language": "en"},
+  "ai_model": "anthropic.claude-opus-5-5",
+  "ai_prompt_version": "agenda-v1",
+  "updated_at": "2026-10-01T08:00:00Z"
+}
+```
+
+`AgendaIn` is the same object without `id`, `meeting_id` and `updated_at`. `title`, `starts_at` (same UTC format as `Meeting`), `duration_minutes` (1-600), `ai_suggestion` (at most 20 KB serialized), `ai_model` (at most 100 chars) and `ai_prompt_version` (at most 50 chars) may be `null`. `items` must hold at least one entry; every item has a non-empty `topic` plus nullable `owner` and `minutes` (1-480), and every action item has a non-empty `task` plus nullable `owner` and `due` (`YYYY-MM-DD`). The model's suggestion is stored as `ai_suggestion` for audit; only a person's `PUT` writes an agenda. The database schema is changed only through Alembic migrations.
 
 ## `frontend/`
 

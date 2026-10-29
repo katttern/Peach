@@ -1,3 +1,5 @@
+import { apiFetch } from "./client";
+
 export type Meeting = {
   id: string;
   title: string;
@@ -8,20 +10,17 @@ export type Meeting = {
 
 export type CreateMeeting = Omit<Meeting, "id">;
 
-const API_URL = `${import.meta.env.VITE_API_URL ?? ""}/api/meetings`;
-
-export async function getMeetings(): Promise<Meeting[]> {
-  const response = await fetch(API_URL);
-  if (!response.ok) throw new Error("Could not load meetings.");
-  return response.json() as Promise<Meeting[]>;
+export function getMeetings(token: string): Promise<Meeting[]> {
+  return apiFetch<Meeting[]>("/api/meetings", {}, token);
 }
 
-export async function createMeeting(payload: CreateMeeting): Promise<Meeting> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!response.ok) throw new Error("Could not create the meeting.");
-  return response.json() as Promise<Meeting>;
+export function createMeeting(
+  payload: CreateMeeting,
+  token: string,
+): Promise<Meeting> {
+  return apiFetch<Meeting>(
+    "/api/meetings",
+    { method: "POST", body: JSON.stringify(payload) },
+    token,
+  );
 }
