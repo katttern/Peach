@@ -59,7 +59,8 @@ What drives the decision:
        path needs it.
 
      Once Claude is available, the `bedrock:InvokeModel` statement can be removed.
-   - Measured on 5 inputs (prompt v2): 94% correct fields, about **$0.0026 per parse**, 3.8 s on average.
+   - Measured on 5 inputs: 83% correct fields with v1, 94% with v2 and **95% with v3**; about **$0.0026 per parse**,
+     3.5 s on average (v3).
    - **Nova Lite was rejected**. It is 18× cheaper, but it followed the injection and set every
      owner to `admin@example.com`.
 5. **Prompt versioning.** `PROMPT_VERSION` is logged with every parse and stored with every saved
