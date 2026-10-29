@@ -113,8 +113,12 @@ token:
 	@echo "   JSON.parse(sessionStorage.getItem(Object.keys(sessionStorage).find(k => k.startsWith('oidc.user:')))).access_token"
 	@echo "3. export TOKEN='<the printed value>'   # valid for 1 hour"
 
+# Fails when the linter is missing instead of skipping silently.
+# Without a global install: make deploy-ai CFN_LINT="uvx cfn-lint"
+CFN_LINT ?= cfn-lint
 cfn-lint:
-	@if command -v cfn-lint >/dev/null 2>&1; then cfn-lint infra/ai.yml; else echo "cfn-lint not installed, skipping"; fi
+	@command -v $(firstword $(CFN_LINT)) >/dev/null 2>&1 || { echo "cfn-lint is not installed (pip install cfn-lint, or CFN_LINT=\"uvx cfn-lint\")"; exit 1; }
+	$(CFN_LINT) infra/ai.yml
 
 REPORTS_STACK ?= peach-reports
 

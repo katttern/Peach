@@ -18,9 +18,10 @@ from botocore.config import Config
 from botocore.exceptions import BotoCoreError, ClientError
 from pydantic import BaseModel, Field, ValidationError
 
+from app.ai.postprocess import fix_deadlines, fix_owners
 from app.settings import settings
 
-PROMPT_VERSION = "agenda-v2"
+PROMPT_VERSION = "agenda-v3"
 MAX_ATTEMPTS = 2
 
 # USD per million tokens (input, output), us-east-1 on-demand. Anthropic: list
@@ -195,9 +196,14 @@ def _blank_to_none(value: str | None) -> str | None:
 
 
 def _accept(
-    agenda: ParsedAgenda, model: str, usage: Usage, provider: str
+    agenda: ParsedAgenda,
+    model: str,
+    usage: Usage,
+    provider: str,
+    text: str,
+    today: date,
 ) -> ParseResult:
-    """Normalize a schema-valid answer and reject one without any items."""
+    """Normalize a schema-valid answer, apply the v3 fixes, reject empty items."""
     agenda = agenda.model_copy(
         update={
             "title": _blank_to_none(agenda.title),
@@ -213,8 +219,10 @@ def _accept(
     )
     if not agenda.items:
         raise AgendaParseError("no agenda found", usage)
+    # v3: owners must be named next to their item; deadline phrases set due.
+    fixed = fix_deadlines(fix_owners(agenda.model_dump(mode="json"), text), text, today)
     return ParseResult(
-        agenda=agenda.model_dump(mode="json"),
+        agenda=ParsedAgenda.model_validate(fixed).model_dump(mode="json"),
         model=model,
         prompt_version=PROMPT_VERSION,
         usage=usage,
@@ -277,7 +285,7 @@ def _call_anthropic(text: str, today: date, tz: str, model: str) -> ParseResult:
                 }
             )
             continue
-        return _accept(agenda, model, usage, "anthropic")
+        return _accept(agenda, model, usage, "anthropic", text, today)
 
     raise AgendaParseError("record_agenda input failed validation twice", usage)
 
@@ -346,6 +354,6 @@ def _call_converse(text: str, today: date, tz: str, model: str) -> ParseResult:
                 }
             )
             continue
-        return _accept(agenda, model, usage, "converse")
+        return _accept(agenda, model, usage, "converse", text, today)
 
     raise AgendaParseError("record_agenda input failed validation twice", usage)

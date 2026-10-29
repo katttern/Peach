@@ -11,6 +11,9 @@ from app.auth import Claims
 
 MODEL = "us.amazon.nova-pro-v1:0"
 TODAY = date(2026, 10, 28)  # a Wednesday
+# Pasted text that really contains the values in VALID (v3 checks owners and
+# deadlines against it).
+TEXT = "Порядок: огляд беклогу (Оля, 15 хв). Іван: оновити дошку до п'ятниці."
 
 VALID = {
     "title": "Планування спринту",
@@ -94,7 +97,7 @@ def test_provider_is_chosen_by_prefix():
 
 def test_success(runtime):
     fake = runtime(tool_reply(VALID))
-    result = agenda.parse_agenda("текст", TODAY, "Europe/Kyiv")
+    result = agenda.parse_agenda(TEXT, TODAY, "Europe/Kyiv")
 
     assert result.agenda == VALID
     assert result.provider == "converse"
@@ -113,7 +116,7 @@ def test_success(runtime):
     assert call["toolConfig"]["toolChoice"] == {"tool": {"name": "record_agenda"}}
     text = call["messages"][0]["content"][0]["text"]
     assert text.startswith("Today is Wednesday 2026-10-28, time zone Europe/Kyiv.")
-    assert "<pasted_text>\nтекст\n</pasted_text>" in text
+    assert f"<pasted_text>\n{TEXT}\n</pasted_text>" in text
 
 
 def test_no_tool_use_raises(runtime):
@@ -133,7 +136,7 @@ def test_invalid_then_valid_retries_with_error_tool_result(runtime):
     first = tool_reply(INVALID, tool_use_id="tooluse_bad")
     fake = runtime(first, tool_reply(VALID, tool_use_id="tooluse_good"))
 
-    result = agenda.parse_agenda("текст", TODAY, "Europe/Kyiv")
+    result = agenda.parse_agenda(TEXT, TODAY, "Europe/Kyiv")
 
     assert result.agenda == VALID
     assert (result.usage.input_tokens, result.usage.output_tokens) == (
@@ -153,7 +156,7 @@ def test_invalid_then_valid_retries_with_error_tool_result(runtime):
 def test_two_invalid_answers_raise(runtime):
     fake = runtime(tool_reply(INVALID), tool_reply(INVALID))
     with pytest.raises(agenda.AgendaParseError, match="twice") as exc:
-        agenda.parse_agenda("текст", TODAY, "UTC")
+        agenda.parse_agenda(TEXT, TODAY, "UTC")
     assert len(fake.calls) == 2
     assert exc.value.usage.output_tokens == 200_000
 
@@ -161,7 +164,7 @@ def test_two_invalid_answers_raise(runtime):
 def test_throttling_is_busy(runtime):
     runtime(throttled())
     with pytest.raises(agenda.ModelBusyError):
-        agenda.parse_agenda("текст", TODAY, "UTC")
+        agenda.parse_agenda(TEXT, TODAY, "UTC")
 
 
 @pytest.mark.parametrize(
@@ -180,7 +183,7 @@ def test_throttling_is_busy(runtime):
 def test_other_failures_are_unavailable(runtime, error, code):
     runtime(error)
     with pytest.raises(agenda.ModelUnavailableError, match=code):
-        agenda.parse_agenda("текст", TODAY, "UTC")
+        agenda.parse_agenda(TEXT, TODAY, "UTC")
 
 
 def test_throttling_reaches_the_browser_as_429(runtime, monkeypatch, capsys):

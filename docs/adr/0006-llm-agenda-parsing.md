@@ -52,11 +52,21 @@ What drives the decision:
    `parse_agenda()` interface.
    - The provider is chosen by the CloudFormation parameter **`ParserModel`**: `anthropic.*` goes to
      Mantle, anything else goes to Converse. Switching back to Claude needs no code change.
+   - The IAM role therefore has two model permissions:
+     - **`bedrock-mantle:CreateInference`** for the Claude path (Messages API on bedrock-mantle);
+     - **`bedrock:InvokeModel`** on `arn:aws:bedrock:*::foundation-model/amazon.nova-*` and
+       `inference-profile/us.amazon.nova-*`. Converse is authorized through `bedrock:InvokeModel`, so the Nova
+       path needs it.
+
+     Once Claude is available, the `bedrock:InvokeModel` statement can be removed.
    - Measured on 5 inputs (prompt v2): 94% correct fields, about **$0.0026 per parse**, 3.8 s on average.
    - **Nova Lite was rejected**. It is 18× cheaper, but it followed the injection and set every
      owner to `admin@example.com`.
 5. **Prompt versioning.** `PROMPT_VERSION` is logged with every parse and stored with every saved
-   agenda. `agenda-v2` adds a 14-day calendar and date rules after the v1 test results.
+   agenda. Each version is recorded in [`docs/lab6/prompts/`](../lab6/prompts/):
+   - `agenda-v2` adds a 14-day calendar and date rules after the v1 test results;
+   - `agenda-v3` keeps the v2 prompt and adds deterministic fixes in code: deadline phrases set `due`, and
+     owners must be named next to their item.
 
 ## Alternatives considered
 
@@ -85,8 +95,13 @@ What drives the decision:
   - there are no SDK retries inside the 30 s Lambda timeout.
 - **Security:** an injected instruction can at worst produce a wrong suggestion, which a person sees
   before saving. Observed: Nova Pro v2 kept the owners but added the injected sentence as an extra
-  task; Nova Lite followed the injection. The parser has no database and no write tools, and its IAM role
-  can only invoke the model and write its own logs.
+  task; Nova Lite followed the injection. The parser has no database and no write tools.
+- **IAM permissions:**
+  - model calls: only the two model permissions above;
+  - logging: the role uses the managed `AWSLambdaBasicExecutionRole`, which grants
+    `logs:CreateLogGroup`, `logs:CreateLogStream` and `logs:PutLogEvents` on `*`, not just on the parser's own
+    log group. Scoping these to `/aws/lambda/peach-agenda-parser` with an inline policy is a possible
+    improvement.
 - **Data risk:** the API's PostgreSQL is an ECS **sidecar without a volume**. Every backend deploy
   or task restart erases all meetings and agendas, including every `ai_suggestion` needed for
   the v1/v2 measurement. Before relying on that metric, move the database to RDS/Aurora, or at least add

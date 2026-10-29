@@ -8,6 +8,9 @@ import pytest
 from app.ai import agenda
 
 TODAY = date(2026, 10, 28)  # a Wednesday
+# Pasted text that really contains the values in VALID (v3 checks owners and
+# deadlines against it).
+TEXT = "Порядок: огляд беклогу (Оля, 15 хв). Іван: оновити дошку до п'ятниці."
 
 VALID = {
     "title": "Планування спринту",
@@ -78,11 +81,11 @@ def fake(monkeypatch):
 
 def test_success(fake):
     messages = fake(tool_response(VALID))
-    result = agenda.parse_agenda("текст", TODAY, "Europe/Kyiv")
+    result = agenda.parse_agenda(TEXT, TODAY, "Europe/Kyiv")
 
     assert result.agenda == VALID
     assert result.provider == "anthropic"
-    assert result.prompt_version == agenda.PROMPT_VERSION == "agenda-v2"
+    assert result.prompt_version == agenda.PROMPT_VERSION == "agenda-v3"
     assert result.usage.cost_usd == 6.0  # 1M in * $4 + 0.1M out * $20
 
     (call,) = messages.calls
@@ -92,12 +95,12 @@ def test_success(fake):
     assert call["max_tokens"] == 4096
     content = call["messages"][0]["content"]
     assert content.startswith("Today is Wednesday 2026-10-28, time zone Europe/Kyiv.")
-    assert "<pasted_text>\nтекст\n</pasted_text>" in content
+    assert f"<pasted_text>\n{TEXT}\n</pasted_text>" in content
 
 
 def test_never_forces_the_tool(fake):
     messages = fake(tool_response(INVALID), tool_response(VALID))
-    agenda.parse_agenda("текст", TODAY, "UTC")
+    agenda.parse_agenda(TEXT, TODAY, "UTC")
     assert all("tool_choice" not in call for call in messages.calls)
 
 
@@ -119,7 +122,7 @@ def test_invalid_then_valid_retries_once_and_sums_usage(fake):
     first = tool_response(INVALID, call_id="toolu_bad")
     messages = fake(first, tool_response(VALID, call_id="toolu_good"))
 
-    result = agenda.parse_agenda("текст", TODAY, "Europe/Kyiv")
+    result = agenda.parse_agenda(TEXT, TODAY, "Europe/Kyiv")
 
     assert result.agenda == VALID
     assert result.usage.input_tokens == 2_000_000
@@ -137,7 +140,7 @@ def test_invalid_then_valid_retries_once_and_sums_usage(fake):
 def test_two_invalid_answers_raise(fake):
     messages = fake(tool_response(INVALID), tool_response(INVALID))
     with pytest.raises(agenda.AgendaParseError, match="twice") as exc:
-        agenda.parse_agenda("текст", TODAY, "UTC")
+        agenda.parse_agenda(TEXT, TODAY, "UTC")
     assert len(messages.calls) == agenda.MAX_ATTEMPTS == 2
     assert exc.value.usage.input_tokens == 2_000_000
 

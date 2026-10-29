@@ -21,6 +21,10 @@ function messageFor(error: unknown): string {
       return "The service is busy, try again in a minute";
     case 401:
       return "Session expired, sign in again";
+    case 502:
+    case 503:
+    case 504:
+      return "The AI service is unavailable right now — you can enter the agenda manually";
     default:
       return "Network error, try again";
   }
