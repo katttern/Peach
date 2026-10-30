@@ -1,0 +1,75 @@
+Running plan in HCP Terraform. Output will stream here. Pressing Ctrl-C
+will stop streaming the logs, but will not stop the plan running remotely.
+
+Preparing the remote plan...
+
+To view this run in a browser, visit:
+https://app.terraform.io/app/peach_katttern/peach-dev/runs/run-QRD9yZRgX9bBo2AN
+
+Waiting for the plan to start...
+
+Terraform v1.17.1
+on linux_amd64
+
+Initializing plugins and modules...
+data.archive_file.mailer: Refreshing...
+data.archive_file.mailer: Refresh complete after 0s [id=a78e099282c2fc915491ebee59c3df8d25db2fd1]
+aws_vpc_endpoint.s3: Refreshing state... [id=vpce-045dd2665a5136698]
+aws_sqs_queue.dlq: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/470115905916/report-requests-dlq]
+aws_cognito_user_pool.main: Refreshing state... [id=us-east-1_Mxjm62BAS]
+aws_security_group.db: Refreshing state... [id=sg-019d5695e862d3f94]
+aws_cloudwatch_log_group.parser: Refreshing state... [id=/aws/lambda/peach-agenda-parser]
+aws_cloudwatch_log_group.mailer: Refreshing state... [id=/aws/lambda/peach-report-mailer]
+aws_cloudwatch_log_group.builder: Refreshing state... [id=/aws/lambda/peach-report-builder]
+aws_db_subnet_group.reports: Refreshing state... [id=peach-reports-dbsubnetgroup-hg7e3l3gpza4]
+data.aws_iam_policy_document.lambda_assume: Refreshing...
+aws_iam_role.scheduler: Refreshing state... [id=peach-reports-SchedulerRole-IEJ0zwiXZLfb]
+data.aws_iam_policy_document.lambda_assume: Refresh complete after 0s [id=2690255455]
+data.aws_caller_identity.current: Refreshing...
+data.aws_caller_identity.current: Refresh complete after 0s [id=470115905916]
+aws_security_group.function: Refreshing state... [id=sg-0a67cc72d8da38fba]
+aws_budgets_budget.monthly: Refreshing state... [id=470115905916:peach-monthly]
+aws_sqs_queue.requests: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/470115905916/report-requests]
+aws_iam_role.parser: Refreshing state... [id=peach-ai-ParserRole-XbH92tsbFUwc]
+aws_iam_role.builder: Refreshing state... [id=peach-reports-BuilderRole-r2xZOCb3QKeK]
+aws_iam_role.mailer: Refreshing state... [id=peach-reports-MailerRole-4Go6vSe1od59]
+aws_s3_bucket.reports: Refreshing state... [id=peach-reports-470115905916]
+aws_vpc_security_group_egress_rule.function_all: Refreshing state... [id=sgr-0c7a5acf26e686da8]
+aws_vpc_security_group_egress_rule.db_all: Refreshing state... [id=sgr-00e81ec02ceadacc6]
+aws_vpc_security_group_ingress_rule.db_from_function: Refreshing state... [id=sgr-098be376cdefc3d0b]
+aws_sqs_queue_redrive_policy.requests: Refreshing state... [id=https://sqs.us-east-1.amazonaws.com/470115905916/report-requests]
+aws_db_instance.reports: Refreshing state... [id=db-BJ76B5NNPID6JYJZ5WC24BDVV4]
+aws_cognito_identity_provider.google: Refreshing state... [id=us-east-1_Mxjm62BAS:Google]
+aws_cognito_user_pool_domain.main: Refreshing state... [id=peach-katttern-demo]
+aws_scheduler_schedule.weekly: Refreshing state... [id=default/peach-weekly-report]
+aws_iam_role_policy.scheduler_send: Refreshing state... [id=peach-reports-SchedulerRole-IEJ0zwiXZLfb:send-to-queue]
+aws_iam_role_policy_attachment.parser_basic: Refreshing state... [id=peach-ai-ParserRole-XbH92tsbFUwc/arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]
+aws_iam_role_policy.parser: Refreshing state... [id=peach-ai-ParserRole-XbH92tsbFUwc:parser]
+aws_iam_role_policy_attachment.builder_vpc_access: Refreshing state... [id=peach-reports-BuilderRole-r2xZOCb3QKeK/arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole]
+aws_lambda_function.mailer: Refreshing state... [id=peach-report-mailer]
+aws_iam_role_policy_attachment.mailer_basic: Refreshing state... [id=peach-reports-MailerRole-4Go6vSe1od59/arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]
+aws_cognito_user_pool_client.web: Refreshing state... [id=18a2au33rm9n9t9eck3g9ja3ve]
+aws_s3_bucket_public_access_block.reports: Refreshing state... [id=peach-reports-470115905916]
+aws_iam_role_policy.builder: Refreshing state... [id=peach-reports-BuilderRole-r2xZOCb3QKeK:builder]
+aws_iam_role_policy.mailer: Refreshing state... [id=peach-reports-MailerRole-4Go6vSe1od59:mailer]
+aws_s3_bucket_lifecycle_configuration.reports: Refreshing state... [id=peach-reports-470115905916]
+aws_lambda_function.builder: Refreshing state... [id=peach-report-builder]
+aws_lambda_permission.mailer_s3: Refreshing state... [id=peach-reports-MailerPermission-vMOOokPSMEMt]
+aws_s3_bucket_notification.reports: Refreshing state... [id=peach-reports-470115905916]
+aws_lambda_event_source_mapping.builder_queue: Refreshing state... [id=805e5568-29b9-435e-a157-f6420e80f69a]
+aws_cognito_managed_login_branding.web: Refreshing state...
+aws_lambda_function.parser: Refreshing state... [id=peach-agenda-parser]
+aws_lambda_permission.parser_invoke_via_url: Refreshing state... [id=peach-ai-ParserInvokePermission-89xH9X8Em6MK]
+aws_lambda_function_url.parser: Refreshing state... [id=peach-agenda-parser]
+aws_lambda_permission.parser_url: Refreshing state... [id=peach-ai-ParserUrlPermission-QdTCW31eNsNe]
+aws_s3_bucket_notification.reports: Drift detected (update)
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
