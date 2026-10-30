@@ -8,6 +8,7 @@ import {
   parserConfigured,
   type ParseResponse,
 } from "../api/parser";
+import { Panel } from "./app-shell";
 import { Button } from "./ui/button";
 
 function messageFor(error: unknown): string {
@@ -64,29 +65,28 @@ export function PasteAgenda({
   if (!parserConfigured) return null;
 
   return (
-    <section
-      className="grid gap-3 rounded border p-4"
-      aria-label="Paste agenda"
-    >
-      <h2 className="text-xl font-semibold">Paste an agenda</h2>
-      <p className="text-sm text-gray-600">
+    <Panel aria-label="Paste agenda">
+      <h2 className="m-0 font-display text-base font-medium">
+        Paste an agenda
+      </h2>
+      <p className="m-0 text-[13px] leading-normal text-muted">
         Paste an email, chat or notes. We fill in the form below; nothing is
         saved until you review it and press Save.
       </p>
       <textarea
-        className="min-h-40 rounded border px-3 py-2"
+        className="min-h-32 resize-y rounded-[18px] border-[1.5px] border-field-line px-4 py-3.5 text-[15px]"
         aria-label="Pasted text"
         value={text}
         onChange={(event) => setText(event.target.value)}
         disabled={busy}
       />
       <div className="flex flex-wrap items-center gap-3 text-sm">
-        <span className={tooLong ? "text-red-700" : "text-gray-600"}>
+        <span className={tooLong ? "text-danger" : "text-muted"}>
           {length.toLocaleString("en-US")} /{" "}
           {MAX_PASTE_CHARS.toLocaleString("en-US")}
         </span>
         {tooLong && (
-          <span className="text-red-700">
+          <span className="text-danger">
             Shorten the text to 10,000 characters to parse it.
           </span>
         )}
@@ -96,14 +96,14 @@ export function PasteAgenda({
           type="button"
           onClick={() => void parse()}
           disabled={busy || empty || tooLong}
-          className="disabled:opacity-50"
+          variant="soft"
         >
           Parse
         </Button>
         {busy && (
           <>
             <span
-              className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"
+              className="h-4 w-4 animate-spin rounded-full border-2 border-tint border-t-accent-text"
               aria-hidden="true"
             />
             <span role="status" className="text-sm">
@@ -111,7 +111,7 @@ export function PasteAgenda({
             </span>
             <button
               type="button"
-              className="text-sm underline"
+              className="text-sm font-semibold text-accent-text underline"
               onClick={() => controller.current?.abort()}
             >
               Cancel
@@ -120,10 +120,10 @@ export function PasteAgenda({
         )}
       </div>
       {error && (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="m-0 text-sm font-semibold text-danger">
           {error}
         </p>
       )}
-    </section>
+    </Panel>
   );
 }

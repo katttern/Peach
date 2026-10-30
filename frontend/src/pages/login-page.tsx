@@ -15,5 +15,5 @@ export function LoginPage() {
     }
   }, [auth]);
 
-  return <p className="p-6 text-gray-600">Redirecting to sign-in…</p>;
+  return <p className="p-6 text-muted">Redirecting to sign-in…</p>;
 }

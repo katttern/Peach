@@ -116,17 +116,17 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <label className="grid gap-1 text-sm">
-      <span className="flex items-center gap-2 font-medium">
+    <label className="grid min-w-0 gap-1.5 text-[13px]">
+      <span className="flex items-center gap-2 font-semibold">
         {label}
         {suggested.has(path) && (
-          <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-normal text-amber-800">
+          <span className="rounded-full bg-tint px-2 py-0.5 text-[11px] font-semibold text-tint-text">
             suggested
           </span>
         )}
       </span>
       {children}
-      {error && <span className="text-red-700">{error}</span>}
+      {error && <span className="text-danger">{error}</span>}
     </label>
   );
 }
@@ -236,10 +236,10 @@ export function AgendaForm({
     <form
       onSubmit={submit}
       noValidate
-      className="grid gap-4 rounded border p-4"
+      className="flex flex-col gap-[18px] rounded-[32px] bg-surface p-[26px] shadow-panel"
       aria-label="Agenda"
     >
-      <h2 className="text-xl font-semibold">Add agenda</h2>
+      <h2 className="m-0 font-display text-base font-medium">Add agenda</h2>
 
       <Field label="Title" path="title" suggested={suggested}>
         <Input
@@ -256,7 +256,7 @@ export function AgendaForm({
           />
           {agendaRange && (
             <span
-              className="text-xs text-gray-600"
+              className="text-[13px] font-normal text-muted"
               title={meetingRangeTitle(agendaRange.start, agendaRange.end)}
             >
               {formatMeetingRange(agendaRange.start, agendaRange.end)}
@@ -282,12 +282,14 @@ export function AgendaForm({
         </Field>
       </div>
 
-      <fieldset className="grid gap-3">
-        <legend className="mb-2 font-semibold">Topics</legend>
+      <fieldset className="m-0 grid gap-3 border-0 p-0">
+        <legend className="mb-3 font-display text-[13px] font-medium">
+          Topics
+        </legend>
         {draft.items.map((item, i) => (
           <div
             key={i}
-            className="grid gap-2 rounded border p-3 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-end"
+            className="grid gap-2.5 rounded-[22px] bg-row p-3.5 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_96px_auto] sm:items-end"
           >
             <Field
               label="Topic *"
@@ -327,7 +329,7 @@ export function AgendaForm({
             </Field>
             <button
               type="button"
-              className="text-sm underline disabled:opacity-40"
+              className="h-11 px-1.5 text-[13px] font-semibold text-accent-text underline disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => removeItem(i)}
               disabled={draft.items.length === 1}
             >
@@ -335,10 +337,10 @@ export function AgendaForm({
             </button>
           </div>
         ))}
-        {errors.items && <p className="text-sm text-red-700">{errors.items}</p>}
+        {errors.items && <p className="text-sm text-danger">{errors.items}</p>}
         <button
           type="button"
-          className="justify-self-start text-sm underline"
+          className="justify-self-start text-sm font-semibold text-accent-text"
           onClick={() =>
             setDraft((current) => ({
               ...current,
@@ -350,15 +352,17 @@ export function AgendaForm({
         </button>
       </fieldset>
 
-      <fieldset className="grid gap-3">
-        <legend className="mb-2 font-semibold">Action items</legend>
+      <fieldset className="m-0 grid gap-3 border-0 p-0">
+        <legend className="mb-3 font-display text-[13px] font-medium">
+          Action items
+        </legend>
         {draft.actionItems.length === 0 && (
-          <p className="text-sm text-gray-600">No action items.</p>
+          <p className="m-0 text-sm text-muted">No action items.</p>
         )}
         {draft.actionItems.map((action, i) => (
           <div
             key={i}
-            className="grid gap-2 rounded border p-3 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-end"
+            className="grid gap-2.5 rounded-[22px] bg-row p-3.5 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_150px_auto] sm:items-end"
           >
             <Field
               label="Task *"
@@ -394,7 +398,7 @@ export function AgendaForm({
             </Field>
             <button
               type="button"
-              className="text-sm underline"
+              className="h-11 px-1.5 text-[13px] font-semibold text-accent-text underline"
               onClick={() => removeAction(i)}
             >
               Remove
@@ -403,7 +407,7 @@ export function AgendaForm({
         ))}
         <button
           type="button"
-          className="justify-self-start text-sm underline"
+          className="justify-self-start text-sm font-semibold text-accent-text"
           onClick={() =>
             setDraft((current) => ({
               ...current,
@@ -415,9 +419,25 @@ export function AgendaForm({
         </button>
       </fieldset>
 
-      <Button type="submit" disabled={saving} className="justify-self-start">
-        {saving ? "Saving…" : "Save agenda"}
-      </Button>
+      <div className="mt-1 flex items-center gap-1">
+        <Button type="submit" disabled={saving}>
+          {saving ? "Saving…" : "Save agenda"}
+        </Button>
+        <span
+          aria-hidden="true"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-accent-text text-accent-text"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path
+              d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      </div>
     </form>
   );
 }

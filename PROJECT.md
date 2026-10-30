@@ -164,17 +164,19 @@ The backend listens on container port **8000** and exposes only the endpoints be
 | `eslint.config.js` | ESLint configuration for React and TypeScript files. |
 | `prettier.config.js` | Prettier formatting configuration. |
 | `.prettierignore` | Files excluded from Prettier checks. |
-| `tailwind.config.ts` | Tailwind content scanning configuration. |
+| `tailwind.config.ts` | Tailwind content scanning, plus the design's colors (CSS variables), fonts and shadows. |
 | `postcss.config.js` | Runs Tailwind through PostCSS. |
-| `index.html` | Vite's HTML document and frontend mount point. |
+| `index.html` | Vite's HTML document and frontend mount point; loads the Unbounded and Manrope fonts and applies the saved theme before first paint. |
 | `src/` | Frontend application source. |
 | `src/main.tsx` | Browser entry point. |
-| `src/App.tsx` | Mounts the application's single meetings page. |
-| `src/index.css` | Tailwind directives and application-wide styles. |
+| `src/App.tsx` | Picks the page from the path: `/` meetings, `/meetings/<id>` agenda, `/login`. |
+| `src/index.css` | Tailwind directives, the light/dark design tokens and the glass decor. |
 | `src/api/` | Browser-side API client modules. |
 | `src/api/meetings.ts` | The sole browser-side client for `GET` and `POST /api/meetings`. |
 | `src/pages/` | Page-level UI composition modules. |
 | `src/pages/meetings-page.tsx` | Composes the meeting list and creation form. |
+| `src/components/app-shell.tsx` | Page frame from the design: theme toggle, account pill, background word, pink band. |
+| `src/lib/theme.ts` | Light/dark theme on `<html data-theme>`, remembered in `localStorage`. |
 | `src/components/` | Reusable UI modules for the meetings page. |
 | `src/components/meeting-list.tsx` | Renders the meetings returned by the API. |
 | `src/components/meeting-form.tsx` | Collects a title, start, end, and attendee count and submits it. |

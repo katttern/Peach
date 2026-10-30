@@ -3,9 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spry meetings</title>
-    <script type="module" crossorigin src="/assets/index-fKfaemj_.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-k839b6CQ.css">
+    <title>Peach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700&family=Manrope:wght@400;500;600;700&family=Rammetto+One&display=swap"
+    />
+    <script>
+      // Apply the saved theme before first paint (lib/theme.ts owns the key).
+      try {
+        if (localStorage.getItem("agenda-theme") === "dark") {
+          document.documentElement.dataset.theme = "dark";
+        }
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="/assets/index-nwzplbMf.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B0PtuRn4.css">
   </head>
   <body>
     <div id="root"></div>
