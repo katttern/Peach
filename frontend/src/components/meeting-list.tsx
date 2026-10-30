@@ -1,32 +1,49 @@
 import type { Meeting } from "../api/meetings";
 import { formatMeetingRange, meetingRangeTitle } from "../lib/time";
+import { meetingHref } from "./meeting-header";
+import { ArrowBadge } from "./ui/button";
 
 export function MeetingList({ meetings }: { meetings: Meeting[] }) {
-  if (meetings.length === 0) return <p>No meetings yet.</p>;
+  if (meetings.length === 0) {
+    return (
+      <p className="rounded-[28px] bg-surface px-6 py-5 shadow-card">
+        No meetings yet.
+      </p>
+    );
+  }
 
   return (
-    <ul className="space-y-3" aria-label="Meetings">
+    <ul
+      className="m-0 flex list-none flex-col gap-3.5 p-0"
+      aria-label="Meetings"
+    >
       {meetings.map((meeting) => (
         <li key={meeting.id}>
           {/* The whole card is the link to the meeting's agenda page. */}
           <a
-            href={`/meetings/${meeting.id}`}
-            className="group flex items-center justify-between gap-4 rounded border p-4 transition-colors hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+            href={meetingHref(meeting.id)}
+            className="group flex flex-wrap items-center justify-between gap-4 rounded-[28px] bg-surface px-6 py-[22px] text-text no-underline shadow-card transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-text"
           >
-            <div className="space-y-1">
-              <h2 className="font-semibold">{meeting.title}</h2>
-              <p title={meetingRangeTitle(meeting.starts_at, meeting.ends_at)}>
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <h2 className="m-0 break-words font-display text-lg font-medium">
+                {meeting.title}
+              </h2>
+              <span
+                className="text-[15px]"
+                title={meetingRangeTitle(meeting.starts_at, meeting.ends_at)}
+              >
                 {formatMeetingRange(meeting.starts_at, meeting.ends_at)}
-              </p>
-              <p className="text-sm text-gray-600">
+              </span>
+              <span className="self-start rounded-full bg-tint px-2.5 py-1 text-xs font-semibold text-tint-text">
                 {meeting.attendee_count} attendees
-              </p>
+              </span>
             </div>
             <span
               aria-hidden="true"
-              className="shrink-0 rounded border px-3 py-1 text-sm font-medium group-hover:border-slate-900 group-hover:bg-white"
+              className="inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full border-[1.5px] border-accent-text pl-[18px] pr-1.5 font-display text-xs font-medium text-accent-text"
             >
-              Open agenda →
+              Open agenda
+              <ArrowBadge />
             </span>
           </a>
         </li>

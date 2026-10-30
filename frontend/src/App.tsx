@@ -1,6 +1,5 @@
 import { useAuth } from "react-oidc-context";
 
-import { AuthBar } from "./components/auth-bar";
 import { LoginPage } from "./pages/login-page";
 import { MeetingPage } from "./pages/meeting-page";
 import { MeetingsPage } from "./pages/meetings-page";
@@ -16,14 +15,9 @@ export default function App() {
     return <LoginPage />;
   }
   const meetingId = MEETING_PATH.exec(path)?.[1];
-  return (
-    <>
-      <AuthBar />
-      {meetingId ? (
-        <MeetingPage key={userKey} meetingId={meetingId} />
-      ) : (
-        <MeetingsPage key={userKey} />
-      )}
-    </>
+  return meetingId ? (
+    <MeetingPage key={userKey} meetingId={meetingId} />
+  ) : (
+    <MeetingsPage key={userKey} />
   );
 }

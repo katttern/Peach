@@ -25,30 +25,30 @@ export function AuthBar() {
     window.location.href = `${domain}/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
   }
 
+  const pill =
+    "inline-flex h-8 items-center rounded-full bg-tint px-3.5 font-semibold text-tint-text";
   return (
-    <div className="fixed right-4 top-3 z-10 flex items-center gap-3 rounded border bg-white px-3 py-1 text-sm">
-      {auth.isLoading ? null : auth.isAuthenticated ? (
+    <div className="inline-flex min-h-12 flex-wrap items-center gap-3.5 rounded-full border-[1.5px] border-line bg-surface py-[7px] pl-[18px] pr-[7px] text-sm">
+      {auth.isLoading ? (
+        <span className="text-muted">…</span>
+      ) : auth.isAuthenticated ? (
         <>
-          <span>{auth.user?.profile.email}</span>
-          <button
-            type="button"
-            className="underline"
-            onClick={() => void signOut()}
-          >
+          <span className="break-all">{auth.user?.profile.email}</span>
+          <button type="button" className={pill} onClick={() => void signOut()}>
             Sign out
           </button>
         </>
       ) : (
         <button
           type="button"
-          className="underline"
+          className={pill}
           onClick={() => void auth.signinRedirect()}
         >
           Sign in
         </button>
       )}
       {auth.error ? (
-        <span className="text-red-600">{auth.error.message}</span>
+        <span className="text-danger">{auth.error.message}</span>
       ) : null}
     </div>
   );

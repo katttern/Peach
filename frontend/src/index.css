@@ -2,7 +2,179 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens from the "Task Board" canvas (Meetings / Agenda).
+   The theme is set on <html data-theme> by lib/theme.ts. */
+:root {
+  --bg: #ffffff;
+  --text: #1b1b1f;
+  --muted: #5f5f66;
+  --surface: #ffffff;
+  --line: #f3d3de;
+  --field-line: #ebd3dc;
+  --field-bg: #ffffff;
+  --tint: #fbe3eb;
+  --tint-text: #8e2f53;
+  --accent: #b8426e;
+  --accent-text: #b8426e;
+  --band: #de849f;
+  --ghost: #fbe3eb;
+  --row: #fdf3f6;
+  --danger: #a61b3c;
+  --shadow: rgba(142, 47, 83, 0.16);
+}
+
+:root[data-theme="dark"] {
+  --bg: #141216;
+  --text: #f4eef1;
+  --muted: #b9aeb4;
+  --surface: #1f1b21;
+  --line: #3a2c33;
+  --field-line: #4a3740;
+  --field-bg: #17141a;
+  --tint: #3a2430;
+  --tint-text: #f5b8cc;
+  --accent: #b8426e;
+  --accent-text: #f09ab8;
+  --band: #5a2a3e;
+  --ghost: #211b21;
+  --row: #272027;
+  --danger: #ff9bb0;
+  --shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Manrope, system-ui, sans-serif;
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+
+input,
+textarea {
+  color: var(--text);
+  background: var(--field-bg);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 3px var(--tint);
+}
+
+/* Decorative glass pebbles around the page content. */
+.glass {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.55;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(230, 230, 238, 0.22) 40%,
+    rgba(210, 210, 220, 0.1) 65%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -4px 10px rgba(255, 255, 255, 0.3),
+    inset 6px 0 14px rgba(150, 150, 168, 0.1),
+    0 10px 24px rgba(70, 40, 60, 0.06);
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  top: 9%;
+  left: 13%;
+  width: 46%;
+  height: 20%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), transparent);
+  transform: rotate(-18deg);
+}
+.glass::after {
+  content: "";
+  position: absolute;
+  right: 12%;
+  bottom: 10%;
+  width: 22%;
+  height: 10%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  filter: blur(2px);
+}
+:root[data-theme="dark"] .glass {
+  opacity: 0.2;
+}
+
+/* Glass peach: a round body, a cleft line and a leaf (positions per page). */
+.peach {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+.peach-body {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 16%;
+  border-radius: 50% 50% 47% 53% / 56% 56% 44% 44%;
+}
+.peach-cleft {
+  position: absolute;
+  left: 44%;
+  top: 21%;
+  width: 24%;
+  height: 70%;
+  border-left: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.peach-leaf {
+  left: 50%;
+  top: 0;
+  width: 40%;
+  height: 28%;
+  border-radius: 0 100% 0 100%;
+  transform: rotate(-20deg);
+}
+.glass.peachy {
+  opacity: 0.75;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 238, 228, 0.7) 0%,
+    rgba(255, 196, 166, 0.3) 45%,
+    rgba(240, 140, 150, 0.2) 75%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+}
+.glass.leaf {
+  opacity: 0.7;
+  background: linear-gradient(
+    140deg,
+    rgba(226, 246, 228, 0.7) 0%,
+    rgba(160, 206, 166, 0.28) 60%,
+    rgba(255, 255, 255, 0.35) 100%
+  );
+}
+:root[data-theme="dark"] .glass.peachy,
+:root[data-theme="dark"] .glass.leaf {
+  opacity: 0.3;
+}
+:root[data-theme="dark"] .peach-cleft {
+  opacity: 0.25;
+}
+@media (max-width: 1100px) {
+  .glass,
+  .peach {
+    display: none;
+  }
 }

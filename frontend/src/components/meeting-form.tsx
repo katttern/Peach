@@ -57,9 +57,12 @@ export function MeetingForm({
     setAttendeeCount(0);
   }
 
-  const label = "grid gap-1 text-sm font-medium";
+  const label = "grid gap-2 text-sm font-semibold";
   return (
-    <form onSubmit={submit} className="grid gap-3 rounded border p-4">
+    <form
+      onSubmit={submit}
+      className="grid gap-[18px] rounded-[32px] border-[1.5px] border-line bg-surface p-7 shadow-form"
+    >
       <div className={label}>
         <label htmlFor={`${id}-title`}>Title</label>
         <Input
@@ -69,7 +72,7 @@ export function MeetingForm({
           required
         />
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className={label}>
           <label htmlFor={`${id}-starts`}>Starts</label>
           <Input
@@ -100,7 +103,7 @@ export function MeetingForm({
             <span
               id={`${id}-ends-error`}
               role="alert"
-              className="font-normal text-red-700"
+              className="font-normal text-danger"
             >
               {endError}
             </span>
@@ -120,13 +123,29 @@ export function MeetingForm({
           aria-describedby={`${id}-attendees-hint`}
           required
         />
-        <span id={`${id}-attendees-hint`} className="font-normal text-gray-600">
+        <span
+          id={`${id}-attendees-hint`}
+          className="text-[13px] font-normal text-muted"
+        >
           Number of people; leave 0 if you don't know yet.
         </span>
       </div>
-      <Button type="submit" className="justify-self-start">
-        Add meeting
-      </Button>
+      <div className="flex items-center gap-1 justify-self-start">
+        <Button type="submit">Add meeting</Button>
+        <span
+          aria-hidden="true"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-accent-text text-accent-text"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M8 3v10M3 8h10"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+            />
+          </svg>
+        </span>
+      </div>
     </form>
   );
 }
