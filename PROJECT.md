@@ -83,7 +83,7 @@ spry/
 | `app/api/agenda.py` | Defines the per-meeting agenda endpoints (authenticated). |
 | `app/auth.py` | Verifies Cognito access tokens; `require_user` FastAPI dependency. Does not import `app.db`. |
 | `app/settings.py` | Environment settings (`COGNITO_AUTHORITY`, `COGNITO_CLIENT_ID`, `CORS_ORIGINS`, `PARSER_MODEL`, `AWS_REGION`). Does not import `app.db`. |
-| `app/ai/` | Agenda parser (Claude on Amazon Bedrock) and its Lambda Function URL handler; deployed separately via `infra/ai.yml`, never touches the database. |
+| `app/ai/` | Agenda parser (Claude on Amazon Bedrock) and its Lambda Function URL handler; deployed separately as a Lambda defined in `infra/ai.tf`, never touches the database. |
 | `app/models/` | SQLAlchemy persistence-model modules. |
 | `app/models/meeting.py` | SQLAlchemy persistence model for a meeting. |
 | `app/models/agenda.py` | SQLAlchemy persistence model for a meeting's agenda (`agendas` table). |

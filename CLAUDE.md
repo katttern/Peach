@@ -7,7 +7,7 @@ Re-verify before relying on it.
 
 ### Regions in use
 - **eu-north-1**: main API (ECS), ALB, frontend S3 bucket, ECR `peach-backend`.
-- **us-east-1**: Cognito (`peach-auth`), Lab 5 reports (`peach-reports`), ECR `peach-reports`.
+- **us-east-1**: Cognito, Lab 5 reports, Lab 6 agenda parser (all in Terraform, see below), ECR `peach-reports`.
 - **eu-central-1**: nothing deployed.
 
 ### Main API (Lab 2 / FastAPI)
@@ -47,17 +47,28 @@ Re-verify before relying on it.
 - The distribution and the function are not in CloudFormation. Update the function with
   `aws cloudfront update-function` followed by `publish-function`.
 
+### Infrastructure as code (since 2026-10-30)
+- Cognito, the Lab 5 report and the Lab 6 parser are Terraform in `infra/` (see `README.md`, ADR 0007). The
+  CloudFormation stacks `peach-auth`, `peach-reports`, `peach-ai` were deleted with `Retain`; their resources
+  were imported (43 imported, 1 re-created: the bucket notification).
+- State and runs: HCP Terraform `peach_katttern/peach-dev`, remote execution, VCS-connected to `katttern/Peach`
+  (`infra`, `main`), manual apply. AWS access via OIDC role `hcp-terraform-peach_katttern`, created by the
+  bootstrap config in `~/tf-bootstrap` (local state, not in this repo).
+- Never `terraform apply` from a laptop; change `infra/` through a PR. Read values with
+  `terraform -chdir=infra output -raw <name>` (`make infra-plan`, `make infra-validate`, …).
+- Secrets (`google_client_secret`, `db_password`) are sensitive workspace variables. They are also in state.
+- Not in Terraform yet: the ECS backend, the frontend bucket and CloudFront, ECR.
+
 ### Databases
 - us-east-1 `peach-reports-db-rym4qinkxoy9`: standalone RDS Postgres 18.3, db.t3.micro,
   20 GB gp2, private, single-AZ, **backup retention 0, deletion protection off**.
-  It belongs to the `peach-reports` stack (resource `Db`), VPC `vpc-0f9532b2001f7d04e`.
+  Managed by Terraform as `aws_db_instance.reports` (`prevent_destroy`), VPC `vpc-0f9532b2001f7d04e`.
 - This is **not** the main API's database (that is the ECS sidecar in eu-north-1).
 
-### Lab 5 reports (us-east-1, stack `peach-reports`)
+### Lab 5 reports (us-east-1, `infra/reports.tf`)
 - Lambdas: `peach-report-builder` (image `peach-reports:v1`, in the VPC, default CMD) and
   `peach-report-mailer` (zip, outside the VPC).
-- The live stack **differs from `infra/reports.yml`**. The live stack owns `Db`, `DbSg` and `DbSubnetGroup`
-  and has no SES identities or `DatabaseHost` parameter. Do not deploy the repo template over it.
+- Written from the deployed template, not the old `infra/reports.yml` (which was stale): own RDS, no SES identities.
 - ECR `peach-reports` (us-east-1, MUTABLE) has one tag, `v1`, pushed 2026-10-15.
   It was built from `backend/Dockerfile.lambda`.
 - The VPC has only an S3 gateway endpoint. No NAT, so VPC Lambdas cannot reach Bedrock or Cognito.
@@ -70,9 +81,8 @@ Re-verify before relying on it.
 - The handler is chosen per function with `ImageConfig.Command`. The Dockerfile CMD defaults to the report builder.
 
 ### Lab 6 (agenda-parser) placement
-- Stack `peach-ai` (`infra/ai.yml`), us-east-1, deployed with `make deploy-ai`. `ALERT_EMAIL` comes from `.env`.
-- `PARSER_MODEL` (CFN parameter `ParserModel`, always passed by `make deploy-ai`, `PARSER_MODEL ?=` in the
-  Makefile) selects the provider by prefix:
+- `infra/ai.tf`, us-east-1. A new image: `make lambda-image`, then `parser_image_uri` in `infra/terraform.tfvars` via PR.
+- The Terraform variable `parser_model` (Lambda env `PARSER_MODEL`) selects the provider by prefix:
   - `anthropic.*` → Messages API on `bedrock-mantle` (IAM `bedrock-mantle:CreateInference`);
   - anything else → Bedrock **Converse** (IAM `bedrock:InvokeModel` on `amazon.nova-*` and on the `us.amazon.nova-*`
     inference profile).
@@ -86,4 +96,4 @@ Re-verify before relying on it.
   the model agreement or use-case form in the Bedrock console (us-east-1) before any parse can work.
 - Local checks: `make llm-hello` and `make parse TEXT="..." [MODEL=...]` (set `PYTHON=` to a venv with the backend installed).
 - Bedrock in us-east-1 lists active Anthropic inference profiles, for example `us.anthropic.claude-*`.
-- Cognito authority: the `Authority` output of the `peach-auth` stack.
+- Cognito authority: `terraform -chdir=infra output -raw authority`.
