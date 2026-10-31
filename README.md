@@ -40,10 +40,9 @@ bootstrap-проєкт з локальним state, і в цьому репоз�
 4. **Apply в HCP Terraform.** Після merge HCP запускає run на `main`, а apply підтверджує людина в UI
    workspace (`auto-apply` вимкнено).
 
-> **Поточний стан.** Workspace `peach-dev` поки працює з CLI, без підключення до GitHub, тож кроки 2 і 4
-> автоматично ще не запускаються. Щоб їх увімкнути, підключіть workspace до репозиторію `katttern/Peach`
-> (Settings → Version Control) з working directory `infra` і гілкою `main`, `auto-apply` залишіть вимкненим.
-> До того часу plan запускають локально (див. нижче), а apply робить власник workspace.
+Workspace `peach-dev` підключений до `katttern/Peach` (Settings → Version Control): working directory
+`infra`, гілка `main`, automatic speculative plans увімкнено, apply method — manual. Рішення та альтернативи
+описано в [ADR 0007](docs/adr/0007-terraform.md).
 
 ### Як запустити plan локально
 

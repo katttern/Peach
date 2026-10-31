@@ -25,11 +25,10 @@ terraform {
 provider "aws" {
   region = var.region
 
-  # ManagedBy = "terraform" is left out until the import is applied: no
-  # imported resource has it, so it would show as a change on 24 resources.
   default_tags {
     tags = {
       PROJECT_NAME = var.project_name
+      ManagedBy    = "terraform"
     }
   }
 }
