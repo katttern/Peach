@@ -56,3 +56,20 @@ output "parser_function_name" {
   description = "Agenda parser Lambda name (FunctionName)."
   value       = aws_lambda_function.parser.function_name
 }
+
+# ---------- Lab 8 stream (null until enable_lab8_stream is true) ----------
+
+output "lab8_stream_name" {
+  description = "Kinesis stream for lab8/cloud/producer_kinesis.py."
+  value       = one(aws_kinesis_stream.lab8[*].name)
+}
+
+output "lab8_firehose_name" {
+  description = "Firehose delivery stream from Kinesis to S3."
+  value       = one(aws_kinesis_firehose_delivery_stream.lab8[*].name)
+}
+
+output "lab8_stream_table" {
+  description = "Glue table over stream/, as database.table."
+  value       = one([for table in aws_glue_catalog_table.lab8_payment_stream : "${table.database_name}.${table.name}"])
+}

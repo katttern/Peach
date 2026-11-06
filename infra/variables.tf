@@ -108,3 +108,28 @@ variable "alert_email" {
   description = "Email address for the monthly budget alerts (AlertEmail)."
   type        = string
 }
+
+# ---------- Lab 8 stream ----------
+
+variable "enable_lab8_stream" {
+  description = "Create the Lab 8 Kinesis pipeline. The shard is billed by the hour, so set it back to false after the lab."
+  type        = bool
+  default     = false
+}
+
+variable "lab8_bucket" {
+  description = "Lab 8 data lake bucket, created by hand in Part 2 and not managed here."
+  type        = string
+}
+
+variable "lab8_glue_database" {
+  description = "Glue database of Lab 8, created by Athena in Part 2 and not managed here."
+  type        = string
+  default     = "lab8"
+}
+
+variable "lab8_stream_start_date" {
+  description = "First dt of the partition projection, yyyy-MM-dd. dt is the day a record reached Firehose."
+  type        = string
+  default     = "2026-11-01"
+}
