@@ -30,3 +30,8 @@ parser_image_uri = "470115905916.dkr.ecr.us-east-1.amazonaws.com/peach-reports:1
 parser_model     = "us.amazon.nova-pro-v1:0"
 allowed_origins  = ["https://d344hgmqfilirt.cloudfront.net", "http://localhost:5173"]
 alert_email      = "katuskatus07@gmail.com"
+
+# ---------- Lab 8 stream ----------
+# The shard is billed by the hour: set this back to false right after the lab.
+enable_lab8_stream = true
+lab8_bucket        = "peach-lab8-470115905916"
