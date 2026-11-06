@@ -1,8 +1,8 @@
 # Скріншоти для здачі
 
-Поклади сюди файли з такими іменами. LMS приймає до 5 файлів, а 4 вже зайняті, тому кілька скрінів треба завантажити одним архівом: `screenshots.zip`.
+У LMS вони йдуть одним файлом: `../screenshots.zip`.
 
-| Файл | Що на ньому | Стан |
-|---|---|---|
-| `console-consumer-group.png` | Redpanda Console, `localhost:8080` → Consumer Groups → `lab8`, два учасники й розподіл партицій | бракує |
-| `athena-part4.png` | Athena, запит по `lab8.payment_stream` | бракує |
+| Файл | Що на ньому |
+|---|---|
+| `console-consumer-group.jpg` | Redpanda Console, група `lab8`: два учасники, один має партиції 0 і 1, другий партицію 2 |
+| `athena-part4.jpg` | Athena, запит по `lab8.payment_stream`: 20 000 подій за статусами |
