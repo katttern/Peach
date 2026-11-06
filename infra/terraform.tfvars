@@ -32,6 +32,6 @@ allowed_origins  = ["https://d344hgmqfilirt.cloudfront.net", "http://localhost:5
 alert_email      = "katuskatus07@gmail.com"
 
 # ---------- Lab 8 stream ----------
-# The shard is billed by the hour: set this back to false right after the lab.
-enable_lab8_stream = true
+# The shard is billed by the hour, so the stream stays off outside the lab.
+enable_lab8_stream = false
 lab8_bucket        = "peach-lab8-470115905916"
