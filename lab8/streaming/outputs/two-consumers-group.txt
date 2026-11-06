@@ -1,0 +1,31 @@
+### while both consumers run, 19:50:39
+GROUP                  lab8
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/2
+STATE                  Stable
+BALANCER               range
+MEMBERS                2
+TOTAL-LAG              228
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID                                     CLIENT-ID  HOST
+payments  0          877             0                 970             93    rdkafka-953e07dc-84b3-4a80-8b6e-7f9c649c1cf8  rdkafka    172.19.0.1
+payments  1          879             0                 959             80    rdkafka-953e07dc-84b3-4a80-8b6e-7f9c649c1cf8  rdkafka    172.19.0.1
+payments  2          1030            0                 1085            55    rdkafka-b8352183-6754-4adc-abf2-3b5e8f1e28cc  rdkafka    172.19.0.1
+
+### end of stream, 19:51:34
+GROUP                  lab8
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/2
+STATE                  Stable
+BALANCER               range
+MEMBERS                2
+TOTAL-LAG              0
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID                                     CLIENT-ID  HOST
+payments  0          1951            0                 1951            0     rdkafka-953e07dc-84b3-4a80-8b6e-7f9c649c1cf8  rdkafka    172.19.0.1
+payments  1          1853            0                 1853            0     rdkafka-953e07dc-84b3-4a80-8b6e-7f9c649c1cf8  rdkafka    172.19.0.1
+payments  2          2196            0                 2196            0     rdkafka-b8352183-6754-4adc-abf2-3b5e8f1e28cc  rdkafka    172.19.0.1
+PARTITION  LEADER  EPOCH  REPLICAS  LOG-START-OFFSET  HIGH-WATERMARK
+0          0       1      [0]       0                 1951
+1          0       1      [0]       0                 1853
+2          0       1      [0]       0                 2196

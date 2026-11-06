@@ -1,0 +1,426 @@
+START run=restart group=lab8-restart lateness=120s watermark=partition
+ASSIGNED [0, 1, 2]
+WINDOW 2026-10-01T07:59:00Z method=card n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:00:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:00:00Z method=card n=17 failures=1 share=5.9%
+WINDOW 2026-10-01T08:00:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:00:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:01:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:01:00Z method=card n=18 failures=1 share=5.6%
+WINDOW 2026-10-01T08:01:00Z method=google_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:02:00Z method=apple_pay n=7 failures=1 share=14.3%
+ALERT 2026-10-01T08:02:00Z method=apple_pay n=7 share=14.3%
+WINDOW 2026-10-01T08:02:00Z method=card n=13 failures=1 share=7.7%
+WINDOW 2026-10-01T08:02:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:02:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:03:00Z method=apple_pay n=12 failures=2 share=16.7%
+ALERT 2026-10-01T08:03:00Z method=apple_pay n=12 share=16.7%
+WINDOW 2026-10-01T08:03:00Z method=card n=11 failures=1 share=9.1%
+WINDOW 2026-10-01T08:03:00Z method=google_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T08:03:00Z method=google_pay n=6 share=16.7%
+WINDOW 2026-10-01T08:03:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:04:00Z method=apple_pay n=9 failures=2 share=22.2%
+ALERT 2026-10-01T08:04:00Z method=apple_pay n=9 share=22.2%
+WINDOW 2026-10-01T08:04:00Z method=card n=23 failures=3 share=13.0%
+ALERT 2026-10-01T08:04:00Z method=card n=23 share=13.0%
+WINDOW 2026-10-01T08:04:00Z method=google_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T08:04:00Z method=google_pay n=9 share=11.1%
+WINDOW 2026-10-01T08:04:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:05:00Z method=apple_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T08:05:00Z method=card n=25 failures=2 share=8.0%
+WINDOW 2026-10-01T08:05:00Z method=google_pay n=4 failures=1 share=25.0%
+WINDOW 2026-10-01T08:06:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:06:00Z method=card n=14 failures=1 share=7.1%
+WINDOW 2026-10-01T08:06:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:06:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:07:00Z method=apple_pay n=11 failures=0 share=0.0%
+WINDOW 2026-10-01T08:07:00Z method=card n=25 failures=1 share=4.0%
+WINDOW 2026-10-01T08:07:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:07:00Z method=qr n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T08:08:00Z method=apple_pay n=9 failures=2 share=22.2%
+ALERT 2026-10-01T08:08:00Z method=apple_pay n=9 share=22.2%
+WINDOW 2026-10-01T08:08:00Z method=card n=9 failures=1 share=11.1%
+ALERT 2026-10-01T08:08:00Z method=card n=9 share=11.1%
+WINDOW 2026-10-01T08:08:00Z method=google_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T08:08:00Z method=qr n=1 failures=0 share=0.0%
+STATS consumed=1250 duplicates=12 late_dropped=21 late_final=6 windows_closed=10 open_windows=3 alerts=8 watermark=2026-10-01T08:09:55Z assigned_partitions=[0, 1, 2]
+WINDOW 2026-10-01T08:09:00Z method=apple_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:09:00Z method=card n=18 failures=0 share=0.0%
+WINDOW 2026-10-01T08:09:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:10:00Z method=apple_pay n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T08:10:00Z method=card n=20 failures=0 share=0.0%
+WINDOW 2026-10-01T08:10:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:11:00Z method=apple_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T08:11:00Z method=card n=24 failures=0 share=0.0%
+WINDOW 2026-10-01T08:11:00Z method=google_pay n=7 failures=1 share=14.3%
+ALERT 2026-10-01T08:11:00Z method=google_pay n=7 share=14.3%
+WINDOW 2026-10-01T08:11:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:12:00Z method=apple_pay n=7 failures=1 share=14.3%
+ALERT 2026-10-01T08:12:00Z method=apple_pay n=7 share=14.3%
+WINDOW 2026-10-01T08:12:00Z method=card n=25 failures=3 share=12.0%
+ALERT 2026-10-01T08:12:00Z method=card n=25 share=12.0%
+WINDOW 2026-10-01T08:12:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T08:12:00Z method=qr n=3 failures=1 share=33.3%
+WINDOW 2026-10-01T08:13:00Z method=apple_pay n=9 failures=2 share=22.2%
+ALERT 2026-10-01T08:13:00Z method=apple_pay n=9 share=22.2%
+WINDOW 2026-10-01T08:13:00Z method=card n=23 failures=0 share=0.0%
+WINDOW 2026-10-01T08:13:00Z method=google_pay n=8 failures=2 share=25.0%
+ALERT 2026-10-01T08:13:00Z method=google_pay n=8 share=25.0%
+WINDOW 2026-10-01T08:13:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:14:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:14:00Z method=card n=13 failures=1 share=7.7%
+WINDOW 2026-10-01T08:14:00Z method=google_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T08:14:00Z method=google_pay n=6 share=16.7%
+WINDOW 2026-10-01T08:14:00Z method=qr n=2 failures=1 share=50.0%
+WINDOW 2026-10-01T08:15:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:15:00Z method=card n=20 failures=0 share=0.0%
+WINDOW 2026-10-01T08:15:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:15:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:16:00Z method=apple_pay n=12 failures=1 share=8.3%
+WINDOW 2026-10-01T08:16:00Z method=card n=17 failures=1 share=5.9%
+WINDOW 2026-10-01T08:16:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:16:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:17:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:17:00Z method=card n=15 failures=1 share=6.7%
+WINDOW 2026-10-01T08:17:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:17:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:18:00Z method=apple_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T08:18:00Z method=apple_pay n=6 share=16.7%
+WINDOW 2026-10-01T08:18:00Z method=card n=28 failures=1 share=3.6%
+WINDOW 2026-10-01T08:18:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:19:00Z method=apple_pay n=11 failures=1 share=9.1%
+WINDOW 2026-10-01T08:19:00Z method=card n=14 failures=0 share=0.0%
+WINDOW 2026-10-01T08:19:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:20:00Z method=apple_pay n=12 failures=1 share=8.3%
+WINDOW 2026-10-01T08:20:00Z method=card n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T08:20:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:20:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:21:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:21:00Z method=card n=17 failures=0 share=0.0%
+WINDOW 2026-10-01T08:21:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:22:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:22:00Z method=card n=22 failures=3 share=13.6%
+ALERT 2026-10-01T08:22:00Z method=card n=22 share=13.6%
+WINDOW 2026-10-01T08:22:00Z method=google_pay n=10 failures=1 share=10.0%
+WINDOW 2026-10-01T08:23:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:23:00Z method=card n=29 failures=3 share=10.3%
+ALERT 2026-10-01T08:23:00Z method=card n=29 share=10.3%
+WINDOW 2026-10-01T08:23:00Z method=google_pay n=7 failures=2 share=28.6%
+ALERT 2026-10-01T08:23:00Z method=google_pay n=7 share=28.6%
+WINDOW 2026-10-01T08:23:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:24:00Z method=apple_pay n=5 failures=1 share=20.0%
+ALERT 2026-10-01T08:24:00Z method=apple_pay n=5 share=20.0%
+WINDOW 2026-10-01T08:24:00Z method=card n=19 failures=0 share=0.0%
+WINDOW 2026-10-01T08:24:00Z method=google_pay n=7 failures=2 share=28.6%
+ALERT 2026-10-01T08:24:00Z method=google_pay n=7 share=28.6%
+WINDOW 2026-10-01T08:25:00Z method=apple_pay n=10 failures=1 share=10.0%
+WINDOW 2026-10-01T08:25:00Z method=card n=23 failures=0 share=0.0%
+WINDOW 2026-10-01T08:25:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:25:00Z method=qr n=1 failures=0 share=0.0%
+STATS consumed=3069 duplicates=33 late_dropped=55 late_final=22 windows_closed=27 open_windows=3 alerts=20 watermark=2026-10-01T08:26:38Z assigned_partitions=[0, 1, 2]
+WINDOW 2026-10-01T08:26:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:26:00Z method=card n=13 failures=1 share=7.7%
+WINDOW 2026-10-01T08:26:00Z method=google_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:27:00Z method=apple_pay n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T08:27:00Z method=card n=23 failures=3 share=13.0%
+ALERT 2026-10-01T08:27:00Z method=card n=23 share=13.0%
+WINDOW 2026-10-01T08:27:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:28:00Z method=apple_pay n=11 failures=0 share=0.0%
+WINDOW 2026-10-01T08:28:00Z method=card n=16 failures=0 share=0.0%
+WINDOW 2026-10-01T08:28:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:29:00Z method=apple_pay n=10 failures=1 share=10.0%
+WINDOW 2026-10-01T08:29:00Z method=card n=17 failures=3 share=17.6%
+ALERT 2026-10-01T08:29:00Z method=card n=17 share=17.6%
+WINDOW 2026-10-01T08:29:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:30:00Z method=apple_pay n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T08:30:00Z method=card n=6 failures=1 share=16.7%
+ALERT 2026-10-01T08:30:00Z method=card n=6 share=16.7%
+WINDOW 2026-10-01T08:30:00Z method=google_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T08:31:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:31:00Z method=card n=19 failures=4 share=21.1%
+ALERT 2026-10-01T08:31:00Z method=card n=19 share=21.1%
+WINDOW 2026-10-01T08:31:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:31:00Z method=qr n=1 failures=0 share=0.0%
+STATS consumed=3609 duplicates=38 late_dropped=66 late_final=27 windows_closed=33 open_windows=3 alerts=24 watermark=2026-10-01T08:32:38Z assigned_partitions=[0, 1, 2]
+REVOKED [0, 1, 2]
+START run=restart group=lab8-restart lateness=120s watermark=partition
+ASSIGNED [0, 1, 2]
+WINDOW 2026-10-01T08:33:00Z method=apple_pay n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:34:00Z method=apple_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:34:00Z method=card n=7 failures=1 share=14.3%
+ALERT 2026-10-01T08:34:00Z method=card n=7 share=14.3%
+WINDOW 2026-10-01T08:35:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:35:00Z method=card n=18 failures=2 share=11.1%
+ALERT 2026-10-01T08:35:00Z method=card n=18 share=11.1%
+WINDOW 2026-10-01T08:35:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:35:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:36:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:36:00Z method=card n=14 failures=2 share=14.3%
+ALERT 2026-10-01T08:36:00Z method=card n=14 share=14.3%
+WINDOW 2026-10-01T08:36:00Z method=google_pay n=14 failures=3 share=21.4%
+ALERT 2026-10-01T08:36:00Z method=google_pay n=14 share=21.4%
+WINDOW 2026-10-01T08:36:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:37:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:37:00Z method=card n=21 failures=2 share=9.5%
+WINDOW 2026-10-01T08:37:00Z method=google_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T08:37:00Z method=google_pay n=9 share=11.1%
+WINDOW 2026-10-01T08:37:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:38:00Z method=apple_pay n=11 failures=2 share=18.2%
+ALERT 2026-10-01T08:38:00Z method=apple_pay n=11 share=18.2%
+WINDOW 2026-10-01T08:38:00Z method=card n=20 failures=1 share=5.0%
+WINDOW 2026-10-01T08:38:00Z method=google_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T08:38:00Z method=qr n=1 failures=1 share=100.0%
+WINDOW 2026-10-01T08:39:00Z method=apple_pay n=13 failures=0 share=0.0%
+WINDOW 2026-10-01T08:39:00Z method=card n=23 failures=3 share=13.0%
+ALERT 2026-10-01T08:39:00Z method=card n=23 share=13.0%
+WINDOW 2026-10-01T08:39:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:40:00Z method=apple_pay n=3 failures=1 share=33.3%
+WINDOW 2026-10-01T08:40:00Z method=card n=25 failures=0 share=0.0%
+WINDOW 2026-10-01T08:40:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:40:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:41:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:41:00Z method=card n=15 failures=0 share=0.0%
+WINDOW 2026-10-01T08:41:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:42:00Z method=apple_pay n=6 failures=2 share=33.3%
+ALERT 2026-10-01T08:42:00Z method=apple_pay n=6 share=33.3%
+WINDOW 2026-10-01T08:42:00Z method=card n=21 failures=1 share=4.8%
+WINDOW 2026-10-01T08:42:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:42:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:43:00Z method=apple_pay n=10 failures=1 share=10.0%
+WINDOW 2026-10-01T08:43:00Z method=card n=25 failures=2 share=8.0%
+WINDOW 2026-10-01T08:43:00Z method=google_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:43:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:44:00Z method=apple_pay n=11 failures=1 share=9.1%
+WINDOW 2026-10-01T08:44:00Z method=card n=20 failures=2 share=10.0%
+WINDOW 2026-10-01T08:44:00Z method=google_pay n=8 failures=2 share=25.0%
+ALERT 2026-10-01T08:44:00Z method=google_pay n=8 share=25.0%
+WINDOW 2026-10-01T08:44:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:45:00Z method=apple_pay n=4 failures=2 share=50.0%
+WINDOW 2026-10-01T08:45:00Z method=card n=19 failures=1 share=5.3%
+WINDOW 2026-10-01T08:45:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:46:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:46:00Z method=card n=14 failures=2 share=14.3%
+ALERT 2026-10-01T08:46:00Z method=card n=14 share=14.3%
+WINDOW 2026-10-01T08:46:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:47:00Z method=apple_pay n=11 failures=0 share=0.0%
+WINDOW 2026-10-01T08:47:00Z method=card n=27 failures=0 share=0.0%
+WINDOW 2026-10-01T08:47:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:47:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:48:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:48:00Z method=card n=16 failures=1 share=6.2%
+WINDOW 2026-10-01T08:48:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:49:00Z method=apple_pay n=7 failures=1 share=14.3%
+ALERT 2026-10-01T08:49:00Z method=apple_pay n=7 share=14.3%
+WINDOW 2026-10-01T08:49:00Z method=card n=25 failures=0 share=0.0%
+WINDOW 2026-10-01T08:49:00Z method=google_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T08:50:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T08:50:00Z method=card n=22 failures=0 share=0.0%
+WINDOW 2026-10-01T08:50:00Z method=google_pay n=7 failures=2 share=28.6%
+ALERT 2026-10-01T08:50:00Z method=google_pay n=7 share=28.6%
+WINDOW 2026-10-01T08:50:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:51:00Z method=apple_pay n=8 failures=1 share=12.5%
+ALERT 2026-10-01T08:51:00Z method=apple_pay n=8 share=12.5%
+WINDOW 2026-10-01T08:51:00Z method=card n=21 failures=3 share=14.3%
+ALERT 2026-10-01T08:51:00Z method=card n=21 share=14.3%
+WINDOW 2026-10-01T08:51:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T08:51:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:52:00Z method=apple_pay n=8 failures=1 share=12.5%
+ALERT 2026-10-01T08:52:00Z method=apple_pay n=8 share=12.5%
+WINDOW 2026-10-01T08:52:00Z method=card n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T08:52:00Z method=google_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:53:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:53:00Z method=card n=20 failures=1 share=5.0%
+WINDOW 2026-10-01T08:53:00Z method=google_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T08:53:00Z method=google_pay n=9 share=11.1%
+WINDOW 2026-10-01T08:54:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:54:00Z method=card n=26 failures=3 share=11.5%
+ALERT 2026-10-01T08:54:00Z method=card n=26 share=11.5%
+WINDOW 2026-10-01T08:54:00Z method=google_pay n=8 failures=1 share=12.5%
+ALERT 2026-10-01T08:54:00Z method=google_pay n=8 share=12.5%
+WINDOW 2026-10-01T08:54:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:55:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T08:55:00Z method=card n=19 failures=2 share=10.5%
+ALERT 2026-10-01T08:55:00Z method=card n=19 share=10.5%
+WINDOW 2026-10-01T08:55:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:55:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:56:00Z method=apple_pay n=8 failures=1 share=12.5%
+ALERT 2026-10-01T08:56:00Z method=apple_pay n=8 share=12.5%
+WINDOW 2026-10-01T08:56:00Z method=card n=17 failures=0 share=0.0%
+WINDOW 2026-10-01T08:56:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T08:57:00Z method=apple_pay n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T08:57:00Z method=card n=20 failures=1 share=5.0%
+WINDOW 2026-10-01T08:57:00Z method=google_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T08:57:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T08:58:00Z method=apple_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T08:58:00Z method=apple_pay n=6 share=16.7%
+WINDOW 2026-10-01T08:58:00Z method=card n=24 failures=0 share=0.0%
+WINDOW 2026-10-01T08:58:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T08:59:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T08:59:00Z method=card n=20 failures=0 share=0.0%
+WINDOW 2026-10-01T08:59:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T08:59:00Z method=qr n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:00:00Z method=apple_pay n=10 failures=2 share=20.0%
+ALERT 2026-10-01T09:00:00Z method=apple_pay n=10 share=20.0%
+WINDOW 2026-10-01T09:00:00Z method=card n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T09:00:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T09:00:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:01:00Z method=apple_pay n=13 failures=0 share=0.0%
+WINDOW 2026-10-01T09:01:00Z method=card n=18 failures=1 share=5.6%
+WINDOW 2026-10-01T09:01:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:01:00Z method=qr n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T09:02:00Z method=apple_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:02:00Z method=card n=15 failures=1 share=6.7%
+WINDOW 2026-10-01T09:02:00Z method=google_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T09:02:00Z method=google_pay n=6 share=16.7%
+WINDOW 2026-10-01T09:02:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:03:00Z method=apple_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:03:00Z method=card n=14 failures=1 share=7.1%
+WINDOW 2026-10-01T09:03:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T09:04:00Z method=apple_pay n=8 failures=1 share=12.5%
+ALERT 2026-10-01T09:04:00Z method=apple_pay n=8 share=12.5%
+WINDOW 2026-10-01T09:04:00Z method=card n=15 failures=1 share=6.7%
+WINDOW 2026-10-01T09:04:00Z method=google_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T09:04:00Z method=google_pay n=6 share=16.7%
+WINDOW 2026-10-01T09:05:00Z method=apple_pay n=17 failures=0 share=0.0%
+WINDOW 2026-10-01T09:05:00Z method=card n=11 failures=2 share=18.2%
+ALERT 2026-10-01T09:05:00Z method=card n=11 share=18.2%
+WINDOW 2026-10-01T09:05:00Z method=google_pay n=4 failures=1 share=25.0%
+WINDOW 2026-10-01T09:06:00Z method=apple_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T09:06:00Z method=card n=16 failures=2 share=12.5%
+ALERT 2026-10-01T09:06:00Z method=card n=16 share=12.5%
+WINDOW 2026-10-01T09:06:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T09:06:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:07:00Z method=apple_pay n=5 failures=1 share=20.0%
+ALERT 2026-10-01T09:07:00Z method=apple_pay n=5 share=20.0%
+WINDOW 2026-10-01T09:07:00Z method=card n=16 failures=1 share=6.2%
+WINDOW 2026-10-01T09:07:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:08:00Z method=apple_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T09:08:00Z method=apple_pay n=9 share=11.1%
+WINDOW 2026-10-01T09:08:00Z method=card n=20 failures=1 share=5.0%
+WINDOW 2026-10-01T09:08:00Z method=google_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T09:09:00Z method=apple_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:09:00Z method=card n=11 failures=0 share=0.0%
+WINDOW 2026-10-01T09:09:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:10:00Z method=apple_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T09:10:00Z method=apple_pay n=9 share=11.1%
+WINDOW 2026-10-01T09:10:00Z method=card n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T09:10:00Z method=google_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T09:10:00Z method=google_pay n=9 share=11.1%
+WINDOW 2026-10-01T09:10:00Z method=qr n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T09:11:00Z method=apple_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T09:11:00Z method=card n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T09:11:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T09:12:00Z method=apple_pay n=9 failures=2 share=22.2%
+ALERT 2026-10-01T09:12:00Z method=apple_pay n=9 share=22.2%
+WINDOW 2026-10-01T09:12:00Z method=card n=12 failures=1 share=8.3%
+WINDOW 2026-10-01T09:12:00Z method=google_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T09:12:00Z method=google_pay n=6 share=16.7%
+WINDOW 2026-10-01T09:13:00Z method=apple_pay n=14 failures=1 share=7.1%
+WINDOW 2026-10-01T09:13:00Z method=card n=19 failures=0 share=0.0%
+WINDOW 2026-10-01T09:13:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T09:13:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:14:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:14:00Z method=card n=26 failures=2 share=7.7%
+WINDOW 2026-10-01T09:14:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T09:14:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:15:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T09:15:00Z method=card n=15 failures=0 share=0.0%
+WINDOW 2026-10-01T09:15:00Z method=google_pay n=7 failures=1 share=14.3%
+ALERT 2026-10-01T09:15:00Z method=google_pay n=7 share=14.3%
+WINDOW 2026-10-01T09:16:00Z method=apple_pay n=11 failures=2 share=18.2%
+ALERT 2026-10-01T09:16:00Z method=apple_pay n=11 share=18.2%
+WINDOW 2026-10-01T09:16:00Z method=card n=19 failures=1 share=5.3%
+WINDOW 2026-10-01T09:16:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:16:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:17:00Z method=apple_pay n=10 failures=1 share=10.0%
+WINDOW 2026-10-01T09:17:00Z method=card n=13 failures=0 share=0.0%
+WINDOW 2026-10-01T09:17:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:18:00Z method=apple_pay n=5 failures=1 share=20.0%
+ALERT 2026-10-01T09:18:00Z method=apple_pay n=5 share=20.0%
+WINDOW 2026-10-01T09:18:00Z method=card n=13 failures=0 share=0.0%
+WINDOW 2026-10-01T09:18:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T09:19:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:19:00Z method=card n=15 failures=3 share=20.0%
+ALERT 2026-10-01T09:19:00Z method=card n=15 share=20.0%
+WINDOW 2026-10-01T09:19:00Z method=google_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T09:20:00Z method=apple_pay n=6 failures=1 share=16.7%
+ALERT 2026-10-01T09:20:00Z method=apple_pay n=6 share=16.7%
+WINDOW 2026-10-01T09:20:00Z method=card n=19 failures=0 share=0.0%
+WINDOW 2026-10-01T09:20:00Z method=google_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:21:00Z method=apple_pay n=4 failures=1 share=25.0%
+WINDOW 2026-10-01T09:21:00Z method=card n=12 failures=0 share=0.0%
+WINDOW 2026-10-01T09:21:00Z method=google_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:21:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:22:00Z method=apple_pay n=11 failures=2 share=18.2%
+ALERT 2026-10-01T09:22:00Z method=apple_pay n=11 share=18.2%
+WINDOW 2026-10-01T09:22:00Z method=card n=18 failures=1 share=5.6%
+WINDOW 2026-10-01T09:22:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:23:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T09:23:00Z method=card n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:23:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:24:00Z method=apple_pay n=4 failures=1 share=25.0%
+WINDOW 2026-10-01T09:24:00Z method=card n=11 failures=0 share=0.0%
+WINDOW 2026-10-01T09:24:00Z method=google_pay n=7 failures=1 share=14.3%
+ALERT 2026-10-01T09:24:00Z method=google_pay n=7 share=14.3%
+WINDOW 2026-10-01T09:25:00Z method=apple_pay n=11 failures=0 share=0.0%
+WINDOW 2026-10-01T09:25:00Z method=card n=17 failures=2 share=11.8%
+ALERT 2026-10-01T09:25:00Z method=card n=17 share=11.8%
+WINDOW 2026-10-01T09:25:00Z method=google_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T09:26:00Z method=apple_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:26:00Z method=card n=16 failures=1 share=6.2%
+WINDOW 2026-10-01T09:26:00Z method=google_pay n=3 failures=1 share=33.3%
+STATS consumed=5305 duplicates=55 late_dropped=52 late_final=15 windows_closed=54 open_windows=3 alerts=41 watermark=2026-10-01T09:27:26Z assigned_partitions=[0, 1, 2]
+WINDOW 2026-10-01T09:27:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:27:00Z method=card n=13 failures=1 share=7.7%
+WINDOW 2026-10-01T09:27:00Z method=google_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T09:27:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:28:00Z method=apple_pay n=8 failures=1 share=12.5%
+ALERT 2026-10-01T09:28:00Z method=apple_pay n=8 share=12.5%
+WINDOW 2026-10-01T09:28:00Z method=card n=13 failures=0 share=0.0%
+WINDOW 2026-10-01T09:28:00Z method=google_pay n=4 failures=0 share=0.0%
+WINDOW 2026-10-01T09:29:00Z method=apple_pay n=9 failures=1 share=11.1%
+ALERT 2026-10-01T09:29:00Z method=apple_pay n=9 share=11.1%
+WINDOW 2026-10-01T09:29:00Z method=card n=18 failures=2 share=11.1%
+ALERT 2026-10-01T09:29:00Z method=card n=18 share=11.1%
+WINDOW 2026-10-01T09:29:00Z method=google_pay n=5 failures=1 share=20.0%
+ALERT 2026-10-01T09:29:00Z method=google_pay n=5 share=20.0%
+WINDOW 2026-10-01T09:29:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:30:00Z method=apple_pay n=13 failures=2 share=15.4%
+ALERT 2026-10-01T09:30:00Z method=apple_pay n=13 share=15.4%
+WINDOW 2026-10-01T09:30:00Z method=card n=15 failures=1 share=6.7%
+WINDOW 2026-10-01T09:30:00Z method=google_pay n=12 failures=1 share=8.3%
+WINDOW 2026-10-01T09:30:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:31:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T09:31:00Z method=card n=14 failures=3 share=21.4%
+ALERT 2026-10-01T09:31:00Z method=card n=14 share=21.4%
+WINDOW 2026-10-01T09:31:00Z method=google_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:32:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:32:00Z method=card n=16 failures=0 share=0.0%
+WINDOW 2026-10-01T09:32:00Z method=google_pay n=2 failures=0 share=0.0%
+WINDOW 2026-10-01T09:33:00Z method=apple_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:33:00Z method=card n=15 failures=2 share=13.3%
+ALERT 2026-10-01T09:33:00Z method=card n=15 share=13.3%
+WINDOW 2026-10-01T09:33:00Z method=google_pay n=7 failures=0 share=0.0%
+WINDOW 2026-10-01T09:33:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:34:00Z method=apple_pay n=5 failures=0 share=0.0%
+WINDOW 2026-10-01T09:34:00Z method=card n=16 failures=2 share=12.5%
+ALERT 2026-10-01T09:34:00Z method=card n=16 share=12.5%
+WINDOW 2026-10-01T09:34:00Z method=google_pay n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:35:00Z method=apple_pay n=6 failures=0 share=0.0%
+WINDOW 2026-10-01T09:35:00Z method=card n=13 failures=1 share=7.7%
+WINDOW 2026-10-01T09:35:00Z method=google_pay n=5 failures=1 share=20.0%
+ALERT 2026-10-01T09:35:00Z method=google_pay n=5 share=20.0%
+WINDOW 2026-10-01T09:35:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:36:00Z method=apple_pay n=10 failures=0 share=0.0%
+WINDOW 2026-10-01T09:36:00Z method=card n=16 failures=1 share=6.2%
+WINDOW 2026-10-01T09:36:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:36:00Z method=qr n=1 failures=0 share=0.0%
+WINDOW 2026-10-01T09:37:00Z method=apple_pay n=8 failures=0 share=0.0%
+WINDOW 2026-10-01T09:37:00Z method=card n=14 failures=1 share=7.1%
+WINDOW 2026-10-01T09:37:00Z method=google_pay n=3 failures=0 share=0.0%
+WINDOW 2026-10-01T09:38:00Z method=apple_pay n=9 failures=0 share=0.0%
+WINDOW 2026-10-01T09:38:00Z method=card n=21 failures=0 share=0.0%
+WINDOW 2026-10-01T09:38:00Z method=google_pay n=2 failures=0 share=0.0%
+STATS consumed=6391 duplicates=63 late_dropped=61 late_final=16 windows_closed=66 open_windows=3 alerts=50 watermark=2026-10-01T09:39:29Z assigned_partitions=[0, 1, 2]
+STATS consumed=6391 duplicates=63 late_dropped=61 late_final=16 windows_closed=66 open_windows=3 alerts=50 watermark=2026-10-01T09:39:29Z assigned_partitions=[0, 1, 2]
+REVOKED [0, 1, 2]
