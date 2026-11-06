@@ -1,0 +1,4 @@
+name,DataScannedInBytes,EngineExecutionTimeInMillis,TotalExecutionTimeInMillis
+01_stream_by_status,8321971,650,859
+02_stream_dedup,8321971,770,1019
+03_stream_check,8321971,494,685

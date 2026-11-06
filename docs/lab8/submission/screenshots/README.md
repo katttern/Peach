@@ -5,4 +5,4 @@
 | Файл | Що на ньому | Стан |
 |---|---|---|
 | `console-consumer-group.png` | Redpanda Console, `localhost:8080` → Consumer Groups → `lab8`, два учасники й розподіл партицій | бракує |
-| `athena-part4.png` | Athena, запит по `lab8.payment_stream` | неможливо, поки Kinesis недоступний на Free plan |
+| `athena-part4.png` | Athena, запит по `lab8.payment_stream` | бракує |

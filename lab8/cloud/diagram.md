@@ -2,7 +2,7 @@
 
 ![Локальний пайплайн Part 3 і хмарний пайплайн Part 4](diagram.svg)
 
-Пайплайн Part 4 спроєктовано, але він не запускався: на AWS Free plan Kinesis і Firehose недоступні. Джерело: [diagram.mmd](diagram.mmd). Дані: той самий датасет платежів, один день із `s3://peach-lab8-470115905916/payments/`.
+Джерело: [diagram.mmd](diagram.mmd). Дані: той самий датасет платежів, один день із `s3://peach-lab8-470115905916/payments/`.
 
 | | Part 3: Redpanda | Part 4: Kinesis |
 |---|---|---|
