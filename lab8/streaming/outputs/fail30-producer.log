@@ -1,0 +1,14 @@
+sending 12000 messages to payments: 20.0 payments/s = 60.6 messages/s, injected failures: 9373
+sent=1000 delivered=999 rate=60.7 msg/s receivedAt=2026-10-01T17:09:22Z
+sent=2000 delivered=1999 rate=60.6 msg/s receivedAt=2026-10-01T17:17:17Z
+sent=3000 delivered=2999 rate=60.6 msg/s receivedAt=2026-10-01T17:25:09Z
+sent=4000 delivered=3999 rate=60.6 msg/s receivedAt=2026-10-01T17:33:17Z
+sent=5000 delivered=4999 rate=60.6 msg/s receivedAt=2026-10-01T17:41:55Z
+sent=6000 delivered=5999 rate=60.6 msg/s receivedAt=2026-10-01T17:50:06Z
+sent=7000 delivered=6999 rate=60.6 msg/s receivedAt=2026-10-01T17:58:26Z
+sent=8000 delivered=7999 rate=60.6 msg/s receivedAt=2026-10-01T18:05:50Z
+sent=9000 delivered=8999 rate=60.6 msg/s receivedAt=2026-10-01T18:13:38Z
+sent=10000 delivered=9999 rate=60.6 msg/s receivedAt=2026-10-01T18:20:21Z
+sent=11000 delivered=10999 rate=60.6 msg/s receivedAt=2026-10-01T18:27:12Z
+sent=12000 delivered=11999 rate=60.6 msg/s receivedAt=2026-10-01T18:34:10Z
+done: sent=12000 delivered=12000 failed=0 undelivered=0

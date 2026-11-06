@@ -1,0 +1,40 @@
+# Lab 8, Part 3: один вузол Redpanda (Kafka-сумісний брокер) і веб-консоль.
+name: peach-lab8
+
+services:
+  redpanda:
+    image: redpandadata/redpanda:v26.2.6
+    command:
+      - redpanda
+      - start
+      # Режим для ноутбука: без перевірок продуктивності диска і без fsync на кожен запис.
+      - --mode=dev-container
+      # Redpanda закріплює потоки за ядрами; одного ядра й 1 ГБ для лабораторної досить.
+      - --smp=1
+      - --memory=1G
+      # Два слухачі, бо клієнти бачать брокера за різними адресами:
+      # internal для контейнерів у мережі Docker, external для Python на ноутбуці.
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
+      # Цю адресу брокер повертає клієнту в метаданих, і далі клієнт ходить саме на неї.
+      # Без localhost:19092 Python отримав би ім'я redpanda і не зміг би підключитись.
+      - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:19092
+    ports:
+      # 127.0.0.1: брокер без автентифікації не має бути видимий у локальній мережі.
+      - "127.0.0.1:19092:19092"
+    healthcheck:
+      test: ["CMD", "rpk", "cluster", "health", "--exit-when-healthy"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+
+  console:
+    image: redpandadata/console:v3.14.0
+    environment:
+      # Консоль живе в мережі Docker, тому йде через internal-слухач.
+      KAFKA_BROKERS: redpanda:9092
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      redpanda:
+        # Чекаємо, поки брокер справді готовий, а не просто запустився.
+        condition: service_healthy
