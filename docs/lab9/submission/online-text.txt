@@ -2,7 +2,7 @@ I took the "no GCP account" route: nothing was deployed to Google Cloud; gcp/ is
 
 1. GCP TERRAFORM AND ADR
 
-Commit: <COMMIT_URL>
+Commit: https://github.com/katttern/Peach/commit/e18ca8fad30ac21ace0a0b975b468c81234f6685
 - gcp/: its own root module and HCP Terraform workspace (peach-gcp), google/google-beta 7.46.2. APIs enabled from Terraform; Cloud SQL PostgreSQL 16 db-f1-micro, 10 GB SSD, us-central1; DB password from random_password into Secret Manager; Artifact Registry; Cloud Run spry-api (own service account, Cloud SQL socket, DATABASE_URL from Secret Manager, min instances 0); Firebase Hosting with /api/** rewritten to Cloud Run; optional GitHub Workload Identity Federation (numeric repository IDs, no keys).
 - docs/adr/0008-gcp-services.md: keep / replace / drop for every row. Database: Cloud SQL stopped between uses (Spry is relational; Firestore would mean rewriting the data layer to save $1.70-9 a month; a database left on AWS adds ~100-150 ms to every request). E-mail: keep SES; a provider key would live in Secret Manager. Not moved: Cognito (users' sub ties them to their data), the weekly report and the Bedrock agenda parser.
 - terraform init -backend=false and terraform validate: docs/lab9/terraform-init-validate.txt ("Success! The configuration is valid.").
