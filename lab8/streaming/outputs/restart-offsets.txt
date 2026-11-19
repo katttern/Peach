@@ -1,0 +1,69 @@
+### during the 60 s stop, 19:47:11
+GROUP                  lab8-restart
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/0
+STATE                  Empty
+BALANCER               
+MEMBERS                0
+TOTAL-LAG              195
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID  CLIENT-ID  HOST
+payments  0          1162            0                 1240            78                          
+payments  1          1135            0                 1180            45                          
+payments  2          1312            0                 1384            72                          
+GROUP                  lab8-restart-kill9
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/1
+STATE                  Stable
+BALANCER               range
+MEMBERS                1
+TOTAL-LAG              438
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID                                     CLIENT-ID  HOST
+payments  0          1094            0                 1240            146   rdkafka-c51c3b13-ab16-4181-bd87-c8fa5e81b4b6  rdkafka    172.19.0.1
+payments  1          1044            0                 1183            139   rdkafka-c51c3b13-ab16-4181-bd87-c8fa5e81b4b6  rdkafka    172.19.0.1
+payments  2          1234            0                 1387            153   rdkafka-c51c3b13-ab16-4181-bd87-c8fa5e81b4b6  rdkafka    172.19.0.1
+
+### just before restart, 19:48:05
+GROUP                  lab8-restart
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/0
+STATE                  Empty
+BALANCER               
+MEMBERS                0
+TOTAL-LAG              3480
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID  CLIENT-ID  HOST
+payments  0          1162            0                 2308            1146                        
+payments  1          1135            0                 2245            1110                        
+payments  2          1312            0                 2536            1224                        
+
+### after the run, 19:49:08
+PARTITION  LEADER  EPOCH  REPLICAS  LOG-START-OFFSET  HIGH-WATERMARK
+0          0       1      [0]       0                 3275
+1          0       1      [0]       0                 3226
+2          0       1      [0]       0                 3499
+GROUP                  lab8-restart
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/0
+STATE                  Empty
+BALANCER               
+MEMBERS                0
+TOTAL-LAG              0
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID  CLIENT-ID  HOST
+payments  0          3275            0                 3275            0                           
+payments  1          3226            0                 3226            0                           
+payments  2          3499            0                 3499            0                           
+GROUP                  lab8-restart-kill9
+COORDINATOR-NODE       0
+COORDINATOR-PARTITION  __consumer_offsets/1
+STATE                  Empty
+BALANCER               
+MEMBERS                0
+TOTAL-LAG              0
+
+TOPIC     PARTITION  CURRENT-OFFSET  LOG-START-OFFSET  LOG-END-OFFSET  LAG   MEMBER-ID  CLIENT-ID  HOST
+payments  0          3275            0                 3275            0                           
+payments  1          3226            0                 3226            0                           
+payments  2          3499            0                 3499            0                           

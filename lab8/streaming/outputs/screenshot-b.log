@@ -1,0 +1,5 @@
+START run=screenshot-b group=lab8 lateness=120s watermark=partition
+ASSIGNED [2]
+STATS consumed=0 duplicates=0 late_dropped=0 late_final=0 windows_closed=0 open_windows=0 alerts=0 watermark=- assigned_partitions=[2]
+STATS consumed=0 duplicates=0 late_dropped=0 late_final=0 windows_closed=0 open_windows=0 alerts=0 watermark=- assigned_partitions=[2]
+REVOKED [2]

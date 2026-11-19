@@ -1,0 +1,36 @@
+PART 2. BATCH IN ATHENA (part2-athena.zip: queries, results, stats)
+
+Scale: 1,000,000 unique invoiceId; 30,197 exact duplicates out of 3,030,197 events; 0% of events more than an hour late (maximum delay 600 s).
+
+Results:
+- Query 2, deduplication: 1,000,000 payments: 939,820 success, 60,180 failure.
+- Query 3, turnover: 726,040,513.31 UAH, 31,656,774.19 USD, 23,400,058.37 EUR.
+- Query 4, failure rate: 5.9-6.1% for almost every method and device; highest is qr/android, 6.71%.
+- Query 5, peak hour: 18:00 UTC, 80,338 payments.
+- Query 6, late events: 60,824 of 3,030,197 (2.007%) arrived more than 60 s late.
+
+Data scanned and run time, JSON vs Parquet:
+- Query 3: 1,260.69 MB, 4.87 s vs 5.00 MB, 1.18 s
+- Query 4: 1,260.69 MB, 3.90 s vs 0.57 MB, 1.23 s
+- Query 5: 1,260.69 MB, 3.36 s vs 3.78 MB, 1.62 s
+By data scanned, Parquet is 252 to 2,214 times cheaper. On the bill it is 126 times cheaper ($0.0063 vs $0.00005), because Athena charges a 10 MB minimum per query.
+
+Why DISTINCT comes before row_number(): after row_number() duplicates have different rn values, so they are no longer identical rows and DISTINCT cannot remove them.
+Without deduplication: rows are counted as payments (3,030,197 instead of 1,000,000), turnover is about 1% too high (7,088,165.45 UAH), and there are 599 too many failed payments. The failure share among final statuses stays about 6.02%, because duplicates are spread evenly.
+
+Glue Crawler: amount int (ours bigint), ccy int, dates string. dt was recognised as a partition. failureReason became a string column, NULL where absent. The crawler is faster to start with; a hand-written schema is a reviewed contract that does not change with the data.
+
+PART 3. STREAMING WITH REDPANDA (part3-consumer-output.zip)
+
+1. Restart: lag grew to 3,480 during the stop. The consumer resumed from offset 3,609 and read 6,391 more: 10,000 in total, equal to the number sent. In-memory windows were lost: windows 08:32-08:34 hold 12 events instead of 88.
+2. Two consumers: one took partition 2, the other partitions 0 and 1. They read 2,196 + 3,804 = 6,000, equal to the number sent. Each window now covers only that consumer's partitions.
+3. 30% failures: failure share rose from 5.79% to 33.43%, alerts from 59 to 248.
+4. Lateness 0: late_dropped rose from 202 to 243. On the same windows, 3,762 events instead of 3,781 and 18 of 338 window/method cells changed. The overall share barely moved (5.79% to 5.77%), but small windows shifted by up to 5 percentage points.
+
+PART 4. STREAMING IN THE CLOUD (part4-diagram.png, producer_kinesis.py, part4-athena.jpg)
+
+Same payments dataset. 20,000 records reached S3 and Athena with no loss. Compared with the diagram in the task, there is no Lambda and SNS branch, and a table with partition projection replaces the crawler. The screenshot was taken after the stream was deleted, with the table recreated over the same S3 files.
+
+Differences from local Redpanda: Kinesis is managed, with no broker to run. It has shards instead of partitions (1 shard: 1,000 records/s or 1 MB/s). Firehose is the consumer, so there is no code of ours, but also no windows or alerts. Latency is about 65 s because of the buffer, vs seconds locally. dt is arrival time, not event time. Duplicates stay in S3 until SQL removes them.
+
+Cost: about $0.018, calculated from AWS prices, not taken from a bill: shard $0.015 (1 hour as an upper bound; it ran about 22 minutes), PUT $0.00028, Firehose $0.0029, Athena $0.00025. The Kinesis and Firehose streams have been deleted.

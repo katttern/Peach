@@ -111,3 +111,56 @@ token:
 report-now:
 	@test -n "$(WEEK)" || (echo "WEEK is required, e.g. make report-now WEEK=2026-W40"; exit 1)
 	./scripts/report-now.sh "$(WEEK)" "$(call tf_output,queue_url)"
+
+# ---------- Lab 8: Big Data (us-east-1), see docs/lab8/TASK.md ----------
+# Stubs: each one fails on purpose, so a not-yet-written step never looks done.
+LAB8_REGION ?= us-east-1
+lab8_stub = @echo "$@: not implemented yet (region $(LAB8_REGION), see docs/lab8/TASK.md)"; exit 1
+
+LAB8_BUCKET ?= peach-lab8-470115905916
+LAB8_COMPOSE = docker compose -f lab8/streaming/docker-compose.yml
+LAB8_PYTHON = lab8/streaming/.venv/bin/python
+# Extra options for the producer and consumer, e.g. ARGS="--limit 2000 --rate 200".
+ARGS ?=
+
+.PHONY: lab8-copy-data lab8-athena lab8-streaming-setup lab8-redpanda-up lab8-redpanda-down lab8-topic lab8-topic-reset lab8-producer lab8-consumer lab8-cloud-producer lab8-cloud-cleanup
+
+lab8-copy-data:
+	$(lab8_stub)
+
+lab8-athena:
+	$(lab8_stub)
+
+# Python environment and one day of events for the replay.
+lab8-streaming-setup:
+	python3 -m venv lab8/streaming/.venv
+	$(LAB8_PYTHON) -m pip install -q -r lab8/streaming/requirements.txt -r lab8/cloud/requirements.txt
+	aws s3 cp "s3://$(LAB8_BUCKET)/payments/dt=2026-10-01/events.jsonl" lab8/streaming/data/ --region "$(LAB8_REGION)"
+
+lab8-redpanda-up:
+	$(LAB8_COMPOSE) up -d --wait
+
+lab8-redpanda-down:
+	$(LAB8_COMPOSE) down
+
+# Safe to repeat: creates the topic only if it does not exist.
+lab8-topic:
+	$(LAB8_COMPOSE) exec -T redpanda sh -c 'rpk topic describe payments >/dev/null 2>&1 || rpk topic create payments --partitions 3 --replicas 1'
+	$(LAB8_COMPOSE) exec -T redpanda rpk topic list
+
+# A clean log between experiments: replaying into the old topic only adds duplicates.
+lab8-topic-reset:
+	$(LAB8_COMPOSE) exec -T redpanda sh -c 'rpk topic delete payments; rpk topic create payments --partitions 3 --replicas 1'
+
+lab8-producer:
+	$(LAB8_PYTHON) lab8/streaming/producer.py $(ARGS)
+
+lab8-consumer:
+	$(LAB8_PYTHON) lab8/streaming/consumer.py $(ARGS)
+
+# Sends to the real Kinesis stream: only after the apply in HCP Terraform.
+lab8-cloud-producer:
+	$(LAB8_PYTHON) lab8/cloud/producer_kinesis.py $(ARGS)
+
+lab8-cloud-cleanup:
+	$(lab8_stub)

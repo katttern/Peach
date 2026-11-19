@@ -1,0 +1,29 @@
+%%{init: {"theme": "base", "flowchart": {"nodeSpacing": 30, "rankSpacing": 45}, "themeVariables": {"fontFamily": "Arial", "fontSize": "15px", "lineColor": "#475569"}}}%%
+flowchart LR
+    subgraph cloud["Part 4: AWS us-east-1, Terraform, погодинна оплата"]
+        direction LR
+        cprod["producer_kinesis.py<br/>boto3 put_records<br/>PartitionKey = invoiceId"]
+        ckin["Kinesis Data Streams<br/>lab8-payments<br/>1 шард, 24 год"]
+        cfire["Data Firehose<br/>буфер 60 с / 5 МБ"]
+        cs3["S3 raw<br/>stream/dt=.../<br/>JSON Lines"]
+        cglue["Glue Data Catalog<br/>payment_stream<br/>partition projection"]
+        cathena["Athena<br/>SQL по стріму"]
+        cprod --> ckin --> cfire --> cs3 --> cglue --> cathena
+    end
+
+    subgraph local["Part 3: локально, docker compose, $0"]
+        direction LR
+        lfile["events.jsonl<br/>один день"]
+        lprod["producer.py<br/>confluent-kafka<br/>key = invoiceId"]
+        lbroker["Redpanda<br/>топік payments<br/>3 партиції"]
+        lcons["consumer.py<br/>вікна 1 хв<br/>за event time"]
+        lalert["ALERT у консолі<br/>failures > 10%"]
+        lfile --> lprod --> lbroker --> lcons --> lalert
+    end
+
+    classDef localNode fill:#ecfdf5,stroke:#047857,color:#064e3b
+    classDef awsNode fill:#eff6ff,stroke:#1d4ed8,color:#1e3a8a
+    class lfile,lprod,lbroker,lcons,lalert localNode
+    class cprod,ckin,cfire,cs3,cglue,cathena awsNode
+    style local fill:#f8fafc,stroke:#94a3b8,color:#0f172a
+    style cloud fill:#f8fafc,stroke:#94a3b8,color:#0f172a

@@ -1,0 +1,5 @@
+AWS/Kinesis IncomingRecords Sum=20000.0
+AWS/Kinesis IncomingBytes Sum=8581971.0
+AWS/Firehose DeliveryToS3.Records Sum=20000.0
+AWS/Firehose DeliveryToS3.Success Sum=11.0
+AWS/Firehose IncomingBytes Sum=0
