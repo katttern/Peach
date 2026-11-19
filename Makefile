@@ -164,3 +164,47 @@ lab8-cloud-producer:
 
 lab8-cloud-cleanup:
 	$(lab8_stub)
+
+# ---------- Lab 9: Google Cloud (gcp/, HCP Terraform workspace peach-gcp), see docs/lab9/ ----------
+# No GCP account was used (the "no GCP account" route). gcp/ is checked with init/validate,
+# and the app runs locally exactly as Cloud Run would run it.
+TF_GCP = terraform -chdir=gcp
+.PHONY: gcp-validate cloudrun-local cloudrun-frontend cloudrun-check cloudrun-stop
+
+# -backend=false: no HCP workspace and no Google credentials are needed.
+gcp-validate:
+	$(TF_GCP) fmt -check -recursive
+	$(TF_GCP) init -backend=false -input=false
+	$(TF_GCP) validate
+
+# The backend image (backend/Dockerfile: uvicorn, no Lambda adapter) with PORT=8080,
+# next to the docker compose PostgreSQL. Migrations run on start, as on Cloud Run.
+CLOUDRUN_IMAGE ?= spry-backend:cloudrun
+cloudrun-local:
+	docker compose up -d --wait postgres
+	docker build --tag "$(CLOUDRUN_IMAGE)" backend
+	-docker rm -f spry-cloudrun >/dev/null 2>&1
+	docker run -d --name spry-cloudrun --network spry_default \
+	  -e PORT=8080 -p 8080:8080 \
+	  -e DATABASE_URL=postgresql+psycopg://spry:spry@postgres:5432/spry \
+	  -e COGNITO_AUTHORITY="$(call tf_output,authority)" \
+	  -e COGNITO_CLIENT_ID="$(call tf_output,client_id)" \
+	  -e CORS_ORIGINS=http://localhost:5173 \
+	  "$(CLOUDRUN_IMAGE)"
+	@echo "API on http://localhost:8080 (docker logs -f spry-cloudrun)"
+
+# The static build, served like Firebase Hosting: VITE_API_URL is empty (same origin)
+# and /api/** is proxied to the Cloud Run container, as the firebase.json rewrite does.
+# http://localhost:5173/ is an allowed Cognito callback, so sign-in works.
+cloudrun-frontend:
+	cd frontend && npm ci && VITE_API_URL="" VITE_COGNITO_AUTHORITY="$(call tf_output,authority)" VITE_COGNITO_CLIENT_ID="$(call tf_output,client_id)" VITE_COGNITO_DOMAIN="$(call tf_output,hosted_domain)" VITE_AGENDA_PARSER_URL="$(call tf_output,parser_url)" npm run build -- --outDir dist-local
+	cd frontend && API_PROXY_TARGET=http://localhost:8080 npx vite preview --outDir dist-local --port 5173 --strictPort
+
+# Without a token: the API is up and rejects anonymous calls; Alembic reached the database.
+cloudrun-check:
+	curl -s -o /dev/null -w "GET /api/meetings without a token -> %{http_code}\n" http://localhost:8080/api/meetings
+	docker compose exec -T postgres psql -U spry -d spry -c "select version_num from alembic_version;"
+
+cloudrun-stop:
+	-docker rm -f spry-cloudrun
+	docker compose stop postgres

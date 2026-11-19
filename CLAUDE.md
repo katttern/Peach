@@ -9,10 +9,14 @@ Re-verify before relying on it.
 - **eu-north-1**: main API (ECS), ALB, frontend S3 bucket, ECR `peach-backend`.
 - **us-east-1**: Cognito, Lab 5 reports, Lab 6 agenda parser (all in Terraform, see below), ECR `peach-reports`.
 - **eu-central-1**: nothing deployed.
+- **Google Cloud**: nothing deployed, no GCP project (Lab 9 took the "no GCP account" route). `gcp/` is only
+  checked with `make gcp-validate` (`init -backend=false`); the HCP workspace `peach-gcp` does not exist yet.
+  The backend image listens on `$PORT` (default 8000; Cloud Run sets 8080), see ADR 0008.
 
 ### Main API (Lab 2 / FastAPI)
 - ECS Fargate cluster `peach-cluster`, service `peach-service`, desired=1 running=1,
-  task definition `peach-backend:7` as of 2026-10-28 (0.5 vCPU / 1 GB). The backend container env
+  task definition `peach-backend:8` as of 2026-11-19 (0.5 vCPU / 1 GB, X86_64, assignPublicIp ENABLED;
+  the ALB spans 3 AZs, so 4 billed public IPv4s). The backend container env
   has `DATABASE_URL`, `COGNITO_AUTHORITY`, `COGNITO_CLIENT_ID` and `CORS_ORIGINS`.
 - Every API endpoint requires a Cognito access token. Meetings are per user: `meetings.owner_sub` holds the
   Cognito `sub` (migration 0003, indexed). Lists are filtered by it, and someone else's meeting or agenda gives 404.

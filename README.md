@@ -78,3 +78,57 @@ make infra-plan          # plan виконується в HCP із змінни�
   не користується, і лише потім PR з видаленням в `infra/`.
 - **Зміна Cognito, від якої залежать токени** (клієнт, домен, callback URLs): після apply перезберіть фронтенд
   (`make deploy-frontend`), бо `VITE_COGNITO_*` вшиваються в бандл під час збірки.
+
+## Google Cloud (Lab 9)
+
+Ядро Spry (фронтенд, API, база) описане для GCP у [`gcp/`](gcp/): окремий root-модуль і окремий workspace HCP
+`peach-gcp`, щоб один plan не міг зачепити обидві хмари. Рішення по сервісах — [ADR 0008](docs/adr/0008-gcp-services.md),
+вартість — [docs/lab9/answers.md](docs/lab9/answers.md#part-3-вартість). У GCP **поки нічого не розгорнуто**: Lab 9
+здано без GCP-акаунта, тож `gcp/` перевірено через `init -backend=false` + `validate`, а застосунок запущено локально
+так, як його запускає Cloud Run.
+
+| GCP | Що | Файл |
+|---|---|---|
+| Cloud Run `spry-api` | той самий `backend/Dockerfile`, слухає `$PORT`, SA `spry-api`, min 0 / max 2 | `gcp/run.tf`, `gcp/iam.tf` |
+| Cloud SQL `spry-pg` | PostgreSQL 16, `db-f1-micro`, 10 GB SSD, us-central1 | `gcp/sql.tf` |
+| Secret Manager | `spry-db-password`, `spry-database-url` (генерує Terraform) | `gcp/secrets.tf` |
+| Artifact Registry `spry` | образи бекенда, лишаються 5 останніх | `gcp/registry.tf` |
+| Firebase Hosting | `frontend/dist`, rewrite `/api/**` → `spry-api` | `gcp/hosting.tf`, `firebase.json` |
+| WIF для GitHub Actions | опційно, вмикається числовими ID репозиторію | `gcp/wif.tf` |
+
+### Перевірка і локальний запуск
+
+```sh
+make gcp-validate        # fmt -check, init -backend=false, validate: без Google-облікових даних
+make cloudrun-local      # postgres (docker compose) + backend з -e PORT=8080 -p 8080:8080
+make cloudrun-frontend   # статичний build, vite preview :5173, /api → :8080 (як rewrite у Firebase)
+make cloudrun-check      # 401 без токена, версія міграцій у БД
+make cloudrun-stop
+```
+
+Вхід працює локально: `http://localhost:5173/` є в callback URLs Cognito.
+
+### Як розгорнути в GCP (коли буде проєкт)
+
+1. Створити проєкт (`spry-<name>-2026`) і бюджет-alert. Terraform SA з ролями з `gcp/iam.tf` і WIF для HCP
+   Terraform (`TFC_GCP_*` змінні workspace), без JSON-ключів. Workspace `peach-gcp` з working directory `gcp`.
+2. `cp gcp/terraform.tfvars.example gcp/terraform.tfvars`, вписати `project_id`. PR → plan → apply в HCP. Перший
+   apply падає на Cloud Run, поки в Artifact Registry немає образу: спершу `-target=google_artifact_registry_repository.backend`.
+3. Образ: `docker buildx build --platform linux/amd64 -t us-central1-docker.pkg.dev/<project>/spry/backend:<sha> --push backend`
+   (`gcloud auth configure-docker us-central1-docker.pkg.dev`), потім `backend_image_tag` у tfvars → apply.
+   Міграції проганяє сам контейнер під час старту.
+4. Фронтенд: `VITE_API_URL=""` (той самий origin), `VITE_COGNITO_*` з `infra`, `npm run build`, потім
+   `firebase deploy --only hosting --project <project>`.
+5. Додати `https://<project>.web.app/` у `callback_urls`/`logout_urls` в `infra/auth.tf` (PR в `infra/`).
+
+### Що лишається на AWS
+
+Cognito (вхід), щотижневий звіт (Lambda, SQS, RDS, SES), парсер агенди (Lambda + Bedrock), а також поточний
+продакшн-API на ECS. Чому — див. ADR 0008.
+
+### Як зупинити базу (головна стаття рахунку)
+
+Cloud SQL не засинає сам: увімкнений `db-f1-micro` коштує $7.67/міс навіть без запитів. Зупинити його можна так:
+`db_activation_policy = "NEVER"` у `terraform.tfvars` → apply (або `gcloud sql instances patch spry-pg
+--activation-policy=NEVER`). Зупинений інстанс платить лише за 10 GB SSD ($1.70/міс). Повне прибирання —
+`terraform destroy` у `gcp/` (`deletion_protection` вимкнено навмисно). Через день варто перевірити Billing → Reports.

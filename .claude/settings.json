@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": ["Bash(terraform:*)", "Bash(docker:*)", "Bash(npm:*)", "Bash(npx:*)",
+              "Bash(git:*)", "Bash(gh:*)", "Bash(curl:*)", "Bash(make:*)", "Edit", "Write"],
+    "deny": ["Bash(git push --force:*)", "Bash(rm -rf:*)", "Read(./.env)"]
+  }
+}
