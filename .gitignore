@@ -12,3 +12,6 @@ backend.zip
 lab8/streaming/data/*
 !lab8/streaming/data/.gitkeep
 lab8/streaming/.venv/
+
+# macOS
+.DS_Store
