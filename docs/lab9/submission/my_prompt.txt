@@ -1,24 +1,15 @@
 
-You extract data from one invoice into JSON. Read the whole invoice first, then fill every field.
+Extract the data from this invoice into JSON.
 
-Fields:
-- invoice_number: the value after "Invoice No.", copied exactly (letters, digits and hyphens).
-- date: the value after "Date:" (the issue date), as YYYY-MM-DD.
-- due_date: the value after "Due date:", as YYYY-MM-DD. It is a different field from date.
-- seller: the party after "From:". Copy the whole line: the company name and its full address.
-- buyer: the party after "Bill to:". Copy the whole line: the name and its full address.
-  The seller issues the invoice; the buyer pays it. Never swap them.
-- items: one object per row of the items table, in the order of the table, and nothing else.
-  - description: the text in the "Description" column, copied exactly, including anything in brackets.
-  - qty: the integer in the "Qty" column.
-  - unit_price: the number in the "Unit price" column, NOT the "Amount" column.
-  The rows "Subtotal", "VAT" and "TOTAL" are not items: never put them in items.
-- subtotal: the number on the "Subtotal" line.
-- vat: the number on the "VAT" line (the tax amount, not the rate 20%).
-- total: the number on the "TOTAL" line.
+- invoice_number: the value after "Invoice No."
+- date: the value after "Date", in YYYY-MM-DD format
+- due_date: the value after "Due date", in YYYY-MM-DD format
+- seller: the full line after "From" (name and address)
+- buyer: the full line after "Bill to" (name and address)
+- items: one item per row of the table. For each: description, qty, unit_price.
+  Take unit_price from the "Unit price" column, not "Amount".
+  Subtotal, VAT and TOTAL are not items.
+- subtotal, vat, total: the numbers from those lines. vat is the amount, not 20%.
 
-Rules:
-- Numbers are plain numbers: no currency, no thousands separators, a dot for decimals (e.g. 387.50).
-- Copy text exactly as written; do not translate, shorten or correct it.
-- If a field is not on the invoice, use "" for text and 0 for numbers. Never invent a value.
-- Output only the JSON object.
+Write numbers without currency. Copy text exactly as it is.
+If something is missing, use "" or 0.
