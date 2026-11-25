@@ -34,7 +34,7 @@ The GCP trap: Cloud SQL never pauses, so the trap is simply leaving it running (
 4. DEMOS WITHOUT BILLING
 
 Notebook (Anyone with the link can view, outputs saved, Run all on a fresh runtime): https://colab.research.google.com/drive/1t8vQON33ktIQByEOSMLBWEmQO3pilG2r?usp=sharing
-Looker Studio dashboard over owid-co2-data.csv (line, geo, top-10 bar, control): <LOOKER_URL>
-One thing I noticed in the data: <ONE SENTENCE FROM THE DASHBOARD>
+Looker Studio dashboard over owid-co2-data.csv (line, geo, top-10 bar, control): https://datastudio.google.com/reporting/db2755db-4439-4d81-ae57-5b29927541d8
+One thing I noticed in the data: Ukraine's CO2 emissions fell by about 80%, from 707 million tonnes in 1990 to 139 million in 2025, a much steeper drop than in Poland or Germany.
 
 The Markdown (A) worked better: both A and B got 8 of 9 fields, but A took half the time, because a short text is far fewer tokens than an image; the one miss in both was the seller's street (Kozelnyska instead of Kozelnytska), which the vision model already misread in section 4, so A inherited it and B repeated it from the same image. On a free Colab Tesla T4 GPU, section 4 (the page to Markdown) took 32 s and section 5 took 2 s for A and 4 s for B. I would pay for Document AI for thousands of similar documents a month, when every run must return the same fields with confidence scores and coordinates, for handwriting or tables across pages, and when an SLA and a fixed processing region matter more than $1.50-30 per 1,000 pages.
